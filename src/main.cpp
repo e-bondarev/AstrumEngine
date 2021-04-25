@@ -1,14 +1,17 @@
-#include "core/window/window.h"
+#include "core/engine/astrum_engine.h"
 
 int main()
 {
-    window = std::make_unique<Window>();
-
-    while (!window->shouldClose())
+    try
     {
-        window->pollEvents();
-        window->swapBuffers();
+        AstrumEngine().run();
+    }
+    catch (std::exception& exception)
+    {
+        A_LOG_OUT(exception.what());
+
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
