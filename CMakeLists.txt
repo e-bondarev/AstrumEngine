@@ -5,6 +5,8 @@ set(PROJECT_VERSION     0.0.1)
 set(TARGET_NAME         ${PROJECT_NAME})
 set(CMAKE_CXX_FLAGS     /std:c++17)
 
+include(cmake/external_settings.cmake)
+
 project(${TARGET_NAME} VERSION ${PROJECT_VERSION})
 
 file(GLOB SRC 
@@ -15,3 +17,12 @@ file(GLOB SRC
 
 add_executable(${TARGET_NAME} ${SRC})
 target_include_directories(${TARGET_NAME} PUBLIC src)
+
+add_subdirectory(external/glew/build/cmake)
+add_subdirectory(external/glfw)
+
+target_link_libraries(${TARGET_NAME} glew_s)
+target_link_libraries(${TARGET_NAME} glfw)
+
+target_include_directories(${TARGET_NAME} PUBLIC external/glew/include)
+target_include_directories(${TARGET_NAME} PUBLIC external/glfw/include)
