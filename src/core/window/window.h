@@ -33,3 +33,6 @@ private:
     Window(const Window&) = delete;
     Window operator=(const Window&) = delete;
 };
+
+// I made it inline static to assure an access to this class across the entire application.
+inline static std::unique_ptr<Window> window;

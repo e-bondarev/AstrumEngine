@@ -2,12 +2,12 @@
 
 int main()
 {
-    Window window;
+    window = std::make_unique<Window>();
 
-    while (!window.shouldClose())
+    while (!window->shouldClose())
     {
-        window.pollEvents();
-        window.swapBuffers();
+        window->pollEvents();
+        window->swapBuffers();
     }
 
     return 0;

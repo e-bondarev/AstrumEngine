@@ -4,12 +4,16 @@ Window::Window(int _width, int _height, const std::string& _title) : width { _wi
 {
     initGlfw();
     initGlew();
+
+    A_DEBUG_LOG_OUT("[Call] Window constructor");
 }
 
 Window::~Window()
 {
     glfwDestroyWindow(glfwWindow);
     glfwTerminate();
+
+    A_DEBUG_LOG_OUT("[Call] Window destructor");
 }
 
 int Window::getWidth() const
