@@ -17,6 +17,7 @@ file(GLOB SRC
 
 add_executable(${TARGET_NAME} ${SRC})
 target_include_directories(${TARGET_NAME} PUBLIC src)
+target_precompile_headers(${TARGET_NAME} PUBLIC src/pch.h)
 
 add_subdirectory(external/glew/build/cmake)
 add_subdirectory(external/glfw)

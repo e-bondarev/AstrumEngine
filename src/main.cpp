@@ -1,22 +1,13 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "core/window/window.h"
 
 int main()
 {
-    GLFWwindow* window;
-    
-    glfwInit();
-    glewInit();
+    Window window;
 
-    glfwDefaultWindowHints();
-
-    window = glfwCreateWindow(800, 600, "Window", nullptr, nullptr);
-
-    while (!glfwWindowShouldClose(window))
+    while (!window.shouldClose())
     {
-        glfwPollEvents();
-
-        glfwSwapBuffers(window);
+        window.pollEvents();
+        window.swapBuffers();
     }
 
     return 0;
