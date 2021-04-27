@@ -80,4 +80,6 @@ void Window::onWindowResize(GLFWwindow* glfwWindow, int width, int height)
 {
     Window::width = width;
     Window::height = height;
+
+    glViewport(0, 0, width, height);
 }

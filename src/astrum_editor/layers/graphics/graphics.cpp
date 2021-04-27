@@ -50,8 +50,6 @@ void Graphics::init()
 
 void Graphics::update()
 {
-    glViewport(0, 0, Window::getWidth(), Window::getHeight());
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader->bind();
