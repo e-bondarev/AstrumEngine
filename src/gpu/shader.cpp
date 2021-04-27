@@ -5,8 +5,8 @@
 Shader::Shader(
     const std::string &vsCode,
     const std::string &fsCode,
-    const str_list_t& uniform_variables,
-    const str_list_t& input_variables
+    const str_list_t& uniformVariables,
+    const str_list_t& inputVariables
 )
 {
     handle = glCreateProgram();
@@ -16,14 +16,14 @@ Shader::Shader(
 
     link();
 
-    for (int i = 0; i < uniform_variables.size(); i++)
+    for (int i = 0; i < uniformVariables.size(); i++)
     {
-        createUniform(uniform_variables[i]);
+        createUniform(uniformVariables[i]);
     }
 
-    for (int i = 0; i < input_variables.size(); i++)
+    for (int i = 0; i < inputVariables.size(); i++)
     {
-        glBindAttribLocation(handle, i, input_variables[i].c_str());
+        glBindAttribLocation(handle, i, inputVariables[i].c_str());
     }
 
     A_DEBUG_LOG_OUT("[Call] Shader constructor");
