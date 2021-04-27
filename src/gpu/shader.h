@@ -29,7 +29,7 @@ private:
     std::map<std::string, unsigned int> uniformLocations;
 
     void link() const;
-    unsigned int createShader(const std::string& shaderCode, const unsigned int& shaderType);
+    unsigned int createShader(const std::string& shaderCode, unsigned int shaderType);
 
     Shader(const Shader&) = delete;
     Shader& operator=(const Shader&) = delete;

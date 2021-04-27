@@ -58,7 +58,7 @@ void Shader::link() const
     glValidateProgram(handle);
 }
 
-unsigned int Shader::createShader(const std::string &shaderCode, const unsigned int &shaderType)
+unsigned int Shader::createShader(const std::string &shaderCode, unsigned int shaderType)
 {
     const unsigned int shaderID = glCreateShader(shaderType);
 
