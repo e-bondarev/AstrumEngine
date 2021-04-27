@@ -1,5 +1,7 @@
 #include "shader.h"
 
+#include <GL/glew.h>
+
 Shader::Shader(
     const std::string &vs_code,
     const std::string &fs_code,
@@ -96,9 +98,12 @@ void Shader::unbind()
 
 void Shader::createUniform(const std::string &name)
 {
-    const int location = glGetUniformLocation(handle, name.c_str());
-
-    locations.insert(std::pair<std::string, int>(name.c_str(), location));
+    uniformLocations.insert(
+        std::pair<std::string, int>(
+            name.c_str(), 
+            glGetUniformLocation(handle, name.c_str())
+        )
+    );
 }
 
 void Shader::setFloat(const std::string &name, float value)
@@ -111,8 +116,7 @@ void Shader::setFloat(const std::string &name, float value)
     }
 #endif
 
-    location = locations.at(name);
-    glUniform1f(location, value);
+    glUniform1f(uniformLocations.at(name), value);
 }
 
 void Shader::setInt(const std::string &name, int value)
@@ -125,11 +129,10 @@ void Shader::setInt(const std::string &name, int value)
     }
 #endif
 
-    location = locations.at(name);
-    glUniform1i(location, value);
+    glUniform1i(uniformLocations.at(name), value);
 }
 
-void Shader::setMat4x4(const std::string &name, const GLfloat *matrix)
+void Shader::setMat4x4(const std::string &name, float const* const matrix)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -139,11 +142,10 @@ void Shader::setMat4x4(const std::string &name, const GLfloat *matrix)
     }
 #endif
 
-    location = locations.at(name);
-    glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
+    glUniformMatrix4fv(uniformLocations.at(name), 1, GL_FALSE, matrix);
 }
 
-void Shader::setVec3(const std::string &name, const GLfloat *vec)
+void Shader::setVec3(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -153,11 +155,10 @@ void Shader::setVec3(const std::string &name, const GLfloat *vec)
     }
 #endif
 
-    location = locations.at(name);
-    glUniform3fv(location, 1, vec);
+    glUniform3fv(uniformLocations.at(name), 1, vec);
 }
 
-void Shader::setVec4(const std::string &name, const GLfloat *vec)
+void Shader::setVec4(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -167,11 +168,10 @@ void Shader::setVec4(const std::string &name, const GLfloat *vec)
     }
 #endif
 
-    location = locations.at(name);
-    glUniform4fv(location, 1, vec);
+    glUniform4fv(uniformLocations.at(name), 1, vec);
 }
 
-void Shader::setListMat4x4(const std::string &name, const GLfloat *list, unsigned int size)
+void Shader::setListMat4x4(const std::string &name, float const* const list, unsigned int size)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -181,12 +181,5 @@ void Shader::setListMat4x4(const std::string &name, const GLfloat *list, unsigne
     }
 #endif
 
-    location = locations.at(name);
-
-    glUniformMatrix4fv(location, size, GL_FALSE, list);
-}
-
-void Shader::setVec4(float x, float y, float z)
-{
-    glUniform3f(location, x, y, z);
+    glUniformMatrix4fv(uniformLocations.at(name), size, GL_FALSE, list);
 }

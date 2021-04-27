@@ -2,8 +2,6 @@
 
 #include "pch.h"
 
-#include <GL/glew.h>
-
 class Shader
 {
 public:
@@ -17,22 +15,22 @@ public:
     void createUniform(const std::string& name);
     void setFloat(const std::string& name, float value);
     void setInt(const std::string& name, int value);
-    void setVec3(const std::string& name, const GLfloat* vec);
-    void setVec4(const std::string& name, const GLfloat* vec);
-    void setMat4x4(const std::string& name, const GLfloat* matrix);
-    void setListMat4x4(const std::string& name, const GLfloat* list, unsigned int size);
-    void setVec4(float x, float y, float z);
+    void setVec3(const std::string& name, float const* const vec);
+    void setVec4(const std::string& name, float const* const vec);
+    void setMat4x4(const std::string& name, float const* const matrix);
+    void setListMat4x4(const std::string& name, float const* const list, unsigned int size);
     
 private:
-    std::map<std::string, unsigned int> locations;
-    unsigned int location;
+    unsigned int handle { 0 };
 
-    unsigned int vsHandle;
-    unsigned int fsHandle;
+    unsigned int vsHandle { 0 };
+    unsigned int fsHandle { 0 };
+
+    std::map<std::string, unsigned int> uniformLocations;
 
     void link() const;
     unsigned int createShader(const std::string& shaderCode, const unsigned int& shaderType);
 
-    unsigned int handle { 0 };
-
+    Shader(const Shader&) = delete;
+    Shader& operator=(const Shader&) = delete;
 };

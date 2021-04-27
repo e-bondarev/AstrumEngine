@@ -28,7 +28,7 @@ public:
     void update() override;
 
 private:
-    std::vector<std::shared_ptr<VAO<Vertex>>> vaos;
+    std::vector<std::unique_ptr<VAO<Vertex>>> vaos;
     std::unique_ptr<Shader> shader;
 
     Graphics(const Graphics&) = delete;

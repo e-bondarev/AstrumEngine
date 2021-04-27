@@ -44,8 +44,8 @@ void Graphics::init()
     };
 
     vaos.resize(2);
-    vaos[0] = std::make_shared<VAO<Vertex>>(model0, offsets, indices0);
-    vaos[1] = std::make_shared<VAO<Vertex>>(model1, offsets, indices1);
+    vaos[0] = std::make_unique<VAO<Vertex>>(model0, offsets, indices0);
+    vaos[1] = std::make_unique<VAO<Vertex>>(model1, offsets, indices1);
 }
 
 void Graphics::update()
