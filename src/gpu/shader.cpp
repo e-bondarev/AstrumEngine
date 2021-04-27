@@ -3,16 +3,16 @@
 #include <GL/glew.h>
 
 Shader::Shader(
-    const std::string &vs_code,
-    const std::string &fs_code,
+    const std::string &vsCode,
+    const std::string &fsCode,
     const str_list_t& uniform_variables,
     const str_list_t& input_variables
 )
 {
     handle = glCreateProgram();
 
-    vsHandle = createShader(vs_code, GL_VERTEX_SHADER);
-    fsHandle = createShader(fs_code, GL_FRAGMENT_SHADER);
+    vsHandle = createShader(vsCode, GL_VERTEX_SHADER);
+    fsHandle = createShader(fsCode, GL_FRAGMENT_SHADER);
 
     link();
 

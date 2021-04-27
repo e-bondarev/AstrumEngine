@@ -6,7 +6,7 @@ class Shader
 {
 public:
     using str_list_t = std::vector<std::string>;
-    Shader(const std::string& vs_code, const std::string& fs_code, const str_list_t& uniforms = {}, const str_list_t& inputs = {});    
+    Shader(const std::string& vsCode, const std::string& fsCode, const str_list_t& uniforms = {}, const str_list_t& inputs = {});    
     ~Shader();
 
     void bind();
