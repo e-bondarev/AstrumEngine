@@ -1,9 +1,16 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <map>
+
 #include <memory>
+
 #include <iostream>
+
 #include <assert.h>
+#include <stdexcept>
+#include <cstdlib>
 
 # define A_LOG_OUT(x) ::std::cout << x << '\n'
 

@@ -8,31 +8,30 @@
 class Window
 {
 public:
-    Window(int _width = 800, int _height = 600, const std::string& _title = "Astrum app");
-    ~Window();
+    static void create(int _width = 800, int _height = 600, const std::string& _title = "Astrum app");
+    static void destroy();
 
-    int getWidth() const;
-    int getHeight() const;
+    static int getWidth();
+    static int getHeight();
 
-    bool shouldClose() const;
-    void pollEvents() const;
-    void swapBuffers() const;
+    static bool shouldClose();
+    static void pollEvents();
+    static void swapBuffers();
 
-    GLFWwindow* getGlfwWindow();
+    static GLFWwindow* getGlfwWindow();
 
 private:
-    int width;
-    int height;
-    std::string title;
+    inline static int width;
+    inline static int height;
+    inline static std::string title;
 
-    GLFWwindow* glfwWindow;
+    inline static GLFWwindow* glfwWindow;
 
-    void initGlfw();
-    void initGlew();
+    static void initGlfw();
+    static void initGlew();
+
+    static void onWindowResize(GLFWwindow* glfwWindow, int width, int height);
 
     Window(const Window&) = delete;
     Window operator=(const Window&) = delete;
 };
-
-// I made it inline static to assure an access to this class across the entire application.
-inline static std::unique_ptr<Window> window;
