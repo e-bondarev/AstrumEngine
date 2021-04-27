@@ -4,14 +4,11 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "elements/dockspace/dockspace.h"
-#include "elements/scene/scene.h"
-#include "elements/viewport/viewport.h"
-#include "elements/inspector/inspector.h"
-
 #include "core/window/window.h"
 
-GUI::GUI()
+#include "../graphics/graphics.h"
+
+GUI::GUI(Layers* _layers) : layers { _layers }
 {
     A_DEBUG_LOG_OUT("[Call] GUI constructor");
 }
@@ -31,10 +28,10 @@ void GUI::init()
 	ImGui_ImplGlfw_InitForOpenGL(Window::getGlfwWindow(), true);
 	ImGui_ImplOpenGL3_Init();
 
-    guiElements.emplace_back(std::make_unique<Dockspace>());
-    guiElements.emplace_back(std::make_unique<Scene>());
-    guiElements.emplace_back(std::make_unique<Viewport>());
-    guiElements.emplace_back(std::make_unique<Inspector>());
+    dockspace = std::make_unique<Dockspace>();
+    scene     = std::make_unique<Scene>();
+    viewport  = std::make_unique<Viewport>();
+    inspector = std::make_unique<Inspector>();
 }
 
 void GUI::newFrame()
@@ -64,11 +61,11 @@ void GUI::render()
 void GUI::update()
 {
     newFrame();
-
-    for (auto& element : guiElements)
-    {
-        element->render();
-    }
+    
+    dockspace->render();
+    scene->render();
+    viewport->render(layers->graphics->getRenderTargetTexture());
+    inspector->render();
 
     render();   
 }

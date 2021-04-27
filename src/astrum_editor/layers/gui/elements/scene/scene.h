@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../gui_element.h"
-
-class Scene : public GUIElement
+class Scene
 {
 public:
-    void render() override;    
+    void render();    
 };

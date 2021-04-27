@@ -5,8 +5,11 @@
 
 void AstrumEditor::createLayers()
 {
-    // layerManager.addLayer(std::make_shared<GUI>());
-    layerManager.addLayer(std::make_shared<Graphics>());
+    layers.gui = std::make_shared<GUI>(&layers);
+    layers.graphics = std::make_shared<Graphics>(&layers);
+
+    layerManager.addLayer(layers.gui);
+    layerManager.addLayer(layers.graphics);
 }
 
 void AstrumEditor::init()

@@ -4,7 +4,7 @@
 
 #include "files/files.h"
 
-Graphics::Graphics()
+Graphics::Graphics(Layers* _layers) : layers { _layers }
 {
     A_DEBUG_LOG_OUT("[Call] Graphics constructor");
 }
@@ -46,18 +46,26 @@ void Graphics::init()
     vaos.resize(2);
     vaos[0] = std::make_unique<VAO<Vertex>>(model0, offsets, indices0);
     vaos[1] = std::make_unique<VAO<Vertex>>(model1, offsets, indices1);
+
+    renderTarget = std::make_unique<ScreenFBO>(Window::getWidth(), Window::getHeight());
 }
 
 void Graphics::update()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderTarget->bind();
+    renderTarget->clear();
+        shader->bind();
+            for (const auto& vao : vaos)
+            {
+                vao->bind();
+                    glDrawElements(GL_TRIANGLES, vao->getVertexCount(), GL_UNSIGNED_INT, nullptr);
+                vao->unbind();
+            }
+        shader->unbind();
+    renderTarget->unbind();
+}
 
-    shader->bind();
-        for (const auto& vao : vaos)
-        {
-            vao->bind();
-                glDrawElements(GL_TRIANGLES, vao->getVertexCount(), GL_UNSIGNED_INT, nullptr);
-            vao->unbind();
-        }
-    shader->unbind();
+unsigned int Graphics::getRenderTargetTexture() const
+{
+    return renderTarget->getTextureHandle();
 }

@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../gui_element.h"
-
-class Dockspace : public GUIElement
+class Dockspace
 {
 public:
-    void render() override;    
+    void render(); 
 };

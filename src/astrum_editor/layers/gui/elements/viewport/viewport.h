@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../gui_element.h"
-
-class Viewport : public GUIElement
+class Viewport
 {
 public:
-    void render() override;    
+    void render(unsigned int fboTextureId);    
 };

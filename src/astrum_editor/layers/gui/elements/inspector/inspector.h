@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../gui_element.h"
-
-class Inspector : public GUIElement
+class Inspector
 {
 public:
-    void render() override;
+    void render();
 };
