@@ -27,6 +27,7 @@ target_precompile_headers(${TARGET_NAME} PUBLIC src/pch.h)
 
 add_subdirectory(external/glew/build/cmake)
 add_subdirectory(external/glfw)
+add_subdirectory(external/glm)
 
 target_link_libraries(${TARGET_NAME} glew_s)
 target_link_libraries(${TARGET_NAME} glfw)
@@ -34,3 +35,4 @@ target_link_libraries(${TARGET_NAME} glfw)
 target_include_directories(${TARGET_NAME} PUBLIC src/external)
 target_include_directories(${TARGET_NAME} PUBLIC external/glew/include)
 target_include_directories(${TARGET_NAME} PUBLIC external/glfw/include)
+target_include_directories(${TARGET_NAME} PUBLIC external/glm)

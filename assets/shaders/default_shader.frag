@@ -1,12 +1,15 @@
 #version 440 core
 
-in vec3 out_Position;
-in vec2 out_Uv;
-in vec3 out_Normal;
+in VSOutput
+{
+   vec3 position;
+   vec2 uv;
+   vec3 normal;
+} vsOut;
 
 out vec4 out_Color;
 
 void main()
 {
-   out_Color = vec4(out_Uv.x, out_Uv.y, 0.0, 1.0);
+   out_Color = vec4(vsOut.uv.x, vsOut.uv.y, 0.0, 1.0);
 }
