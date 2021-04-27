@@ -7,6 +7,17 @@
 #include "gpu/shader.h"
 
 #include "pch.h"
+
+struct Vec2 { float x, y; };
+struct Vec3 { float x, y, z; };
+
+struct Vertex
+{
+    Vec3 position;
+    Vec2 uv;
+    Vec3 normal;
+};
+
 class Graphics : public Layer
 {
 public: 
@@ -17,7 +28,7 @@ public:
     void update() override;
 
 private:
-    std::unique_ptr<VAO> vao;
+    std::vector<std::shared_ptr<VAO<Vertex>>> vaos;
     std::unique_ptr<Shader> shader;
 
     Graphics(const Graphics&) = delete;

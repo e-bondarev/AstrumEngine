@@ -9,14 +9,14 @@ Shader::Shader(
 {
     handle = glCreateProgram();
 
-    vsHandle = CreateShader(vs_code, GL_VERTEX_SHADER);
-    fsHandle = CreateShader(fs_code, GL_FRAGMENT_SHADER);
+    vsHandle = createShader(vs_code, GL_VERTEX_SHADER);
+    fsHandle = createShader(fs_code, GL_FRAGMENT_SHADER);
 
-    Link();
+    link();
 
     for (int i = 0; i < uniform_variables.size(); i++)
     {
-        CreateUniform(uniform_variables[i]);
+        createUniform(uniform_variables[i]);
     }
 
     for (int i = 0; i < input_variables.size(); i++)
@@ -34,7 +34,7 @@ Shader::~Shader()
 #endif
 }
 
-void Shader::Release()
+void Shader::release()
 {
 #ifdef ASTRUM_SHADER_DEBUG
 
@@ -44,7 +44,7 @@ void Shader::Release()
 
     if (handle != 0)
     {
-        Unbind();
+        unbind();
         glDetachShader(handle, vsHandle);
         glDetachShader(handle, fsHandle);
         glDeleteShader(vsHandle);
@@ -53,7 +53,7 @@ void Shader::Release()
     }
 }
 
-void Shader::Link() const
+void Shader::link() const
 {
     glLinkProgram(handle);
 
@@ -70,7 +70,7 @@ void Shader::Link() const
     glValidateProgram(handle);
 }
 
-unsigned int Shader::CreateShader(const std::string &shaderCode, const unsigned int &shaderType)
+unsigned int Shader::createShader(const std::string &shaderCode, const unsigned int &shaderType)
 {
     const unsigned int shaderID = glCreateShader(shaderType);
 
@@ -98,29 +98,29 @@ unsigned int Shader::CreateShader(const std::string &shaderCode, const unsigned 
     return shaderID;
 }
 
-void Shader::Bind()
+void Shader::bind()
 {
     glUseProgram(handle);
 }
 
-void Shader::Unbind()
+void Shader::unbind()
 {
     glUseProgram(0);
 }
 
-void Shader::CreateUniform(const std::string &name)
+void Shader::createUniform(const std::string &name)
 {
     const int location = glGetUniformLocation(handle, name.c_str());
 
     locations.insert(std::pair<std::string, int>(name.c_str(), location));
 }
 
-void Shader::SetFloat(const std::string &name, const float value)
+void Shader::setFloat(const std::string &name, const float value)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
     {
-        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: SetMat4x4()]: Variable " << name << " doesn't exist.");
+        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setMat4x4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
@@ -129,12 +129,12 @@ void Shader::SetFloat(const std::string &name, const float value)
     glUniform1f(location, value);
 }
 
-void Shader::SetInt(const std::string &name, const int value)
+void Shader::setInt(const std::string &name, const int value)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
     {
-        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: SetMat4x4()]: Variable " << name << " doesn't exist.");
+        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setMat4x4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
@@ -143,12 +143,12 @@ void Shader::SetInt(const std::string &name, const int value)
     glUniform1i(location, value);
 }
 
-void Shader::SetMat4x4(const std::string &name, const GLfloat *matrix)
+void Shader::setMat4x4(const std::string &name, const GLfloat *matrix)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
     {
-        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: SetMat4x4()]: Variable " << name << " doesn't exist.");
+        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setMat4x4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
@@ -157,7 +157,7 @@ void Shader::SetMat4x4(const std::string &name, const GLfloat *matrix)
     glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
 }
 
-void Shader::SetVec3(const std::string &name, const GLfloat *vec)
+void Shader::setVec3(const std::string &name, const GLfloat *vec)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -171,12 +171,12 @@ void Shader::SetVec3(const std::string &name, const GLfloat *vec)
     glUniform3fv(location, 1, vec);
 }
 
-void Shader::SetVec4(const std::string &name, const GLfloat *vec)
+void Shader::setVec4(const std::string &name, const GLfloat *vec)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
     {
-        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: SetVec4()]: Variable " << name << " doesn't exist.");
+        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setVec4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
@@ -195,12 +195,12 @@ void Shader::SetVec4(const std::string &name, const GLfloat *vec)
 // }
 
 // glm::value_ptr((*list)[0]), list.size()
-void Shader::SetListMat4x4(const std::string &name, const GLfloat *list, const unsigned int size)
+void Shader::setListMat4x4(const std::string &name, const GLfloat *list, const unsigned int size)
 {
 #ifdef ASTRUM_SHADER_DEBUG
     if (locations.find(name) == locations.end())
     {
-        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: SetListMat4x4()]: Variable " << name << " doesn't exist.");
+        A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setListMat4x4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
@@ -210,7 +210,7 @@ void Shader::SetListMat4x4(const std::string &name, const GLfloat *list, const u
     glUniformMatrix4fv(location, size, GL_FALSE, list);
 }
 
-void Shader::SetVec4(const float x, const float y, const float z)
+void Shader::setVec4(const float x, const float y, const float z)
 {
     glUniform3f(location, x, y, z);
 }

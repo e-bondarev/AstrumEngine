@@ -2,6 +2,8 @@
 
 #include "core/window/window.h"
 
+#include "files/files.h"
+
 Graphics::Graphics()
 {
     A_DEBUG_LOG_OUT("[Call] Graphics constructor");
@@ -14,57 +16,50 @@ Graphics::~Graphics()
 
 void Graphics::init()
 {
-    std::string v = 
-    "#version 440 core\n"
-    "in vec3 pos;"
-    "void main()"
-    "{"
-    "   gl_Position = vec4(pos, 1.0);"
-    "}"
-    ;
-    std::string f = 
-    "#version 440 core\n"
-    "out vec4 out_Color;"
-    "void main()"
-    "{"
-    "   out_Color = vec4(0, 1, 0, 1);"
-    "}"
-    ;
+    std::string vsCode = util::file::read("assets/shaders/default_shader.vert");
+    std::string fsCode = util::file::read("assets/shaders/default_shader.frag");
 
-    shader = std::make_unique<Shader>(v, f);
+    shader = std::make_unique<Shader>(vsCode, fsCode);
 
-    std::vector<float> vertices
+    std::vector<Vertex> model0
     {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+        {{ -0.2f - 0.5f, -0.2f, 0.0f }, { 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }},
+        {{  0.2f - 0.5f, -0.2f, 0.0f }, { 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }},
+        {{  0.0f - 0.5f,  0.2f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }}
+    };
+    std::vector<int> indices0 { 0, 1, 2 };
+
+    std::vector<Vertex> model1
+    {
+        {{ -0.2f + 0.5f, -0.2f, 0.0f }, { 0.2f, 0.4f }, { 0.0f, 0.0f, 0.0f }},
+        {{  0.2f + 0.5f, -0.2f, 0.0f }, { 0.4f, 0.2f }, { 0.0f, 0.0f, 0.0f }},
+        {{  0.0f + 0.5f,  0.2f, 0.0f }, { 0.0f, 0.8f }, { 0.0f, 0.0f, 0.0f }}
+    };
+    std::vector<int> indices1 { 0, 1, 2 };
+
+    std::vector<size_t> offsets = {
+        offsetof(Vertex, position),
+        offsetof(Vertex, uv),
+        offsetof(Vertex, normal)
     };
 
-    vao = std::make_unique<VAO>();
-    vao->bind();
-    vao->createAttribute(0, vertices, 3);
-    vao->createIndexBuffer(std::vector<int> { 0, 1, 2 });
-    vao->unbind();
+    vaos.resize(2);
+    vaos[0] = std::make_shared<VAO<Vertex>>(model0, offsets, indices0);
+    vaos[1] = std::make_shared<VAO<Vertex>>(model1, offsets, indices1);
 }
 
 void Graphics::update()
 {
     glViewport(0, 0, Window::getWidth(), Window::getHeight());
 
-    shader->Bind();
-
-    vao->bind();
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glDrawElements(
-        GL_TRIANGLES,      
-        vao->getVertexCount(),
-        GL_UNSIGNED_INT,
-        nullptr
-    );
-
-    vao->unbind();
-
-    shader->Unbind();
+    shader->bind();
+        for (const auto& vao : vaos)
+        {
+            vao->bind();
+                glDrawElements(GL_TRIANGLES, vao->getVertexCount(), GL_UNSIGNED_INT, nullptr);
+            vao->unbind();
+        }
+    shader->unbind();
 }
