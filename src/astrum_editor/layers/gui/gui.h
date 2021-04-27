@@ -8,6 +8,7 @@
 #include "elements/scene/scene.h"
 #include "elements/viewport/viewport.h"
 #include "elements/inspector/inspector.h"
+#include "elements/assets/assets.h"
 
 #include "pch.h"
 
@@ -30,6 +31,7 @@ private:
     std::unique_ptr<Scene> scene;
     std::unique_ptr<Viewport> viewport;
     std::unique_ptr<Inspector> inspector;
+    std::unique_ptr<Assets> assets;
 
     GUI(const GUI&) = delete;
     GUI& operator=(const GUI&) = delete;

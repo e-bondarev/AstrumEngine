@@ -1,6 +1,6 @@
 #include "screen_fbo.h"
 
-ScreenFBO::ScreenFBO(unsigned int _width, unsigned int _height) : Framebuffer(_width, _height, GL_DEPTH_BUFFER_BIT, { GL_COLOR_ATTACHMENT0 })
+ScreenFBO::ScreenFBO(unsigned int _width, unsigned int _height) : Framebuffer(_width, _height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, { GL_COLOR_ATTACHMENT0 })
 {
     beginInit();
 

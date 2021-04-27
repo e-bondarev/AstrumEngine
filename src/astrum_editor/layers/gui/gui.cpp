@@ -32,6 +32,7 @@ void GUI::init()
     scene     = std::make_unique<Scene>();
     viewport  = std::make_unique<Viewport>();
     inspector = std::make_unique<Inspector>();
+    assets = std::make_unique<Assets>();
 }
 
 void GUI::newFrame()
@@ -64,8 +65,9 @@ void GUI::update()
     
     dockspace->render();
     scene->render();
-    viewport->render(layers->graphics->getRenderTargetTexture());
+    viewport->render(layers->graphics->getRenderTarget());
     inspector->render();
+    assets->render();
 
     render();   
 }

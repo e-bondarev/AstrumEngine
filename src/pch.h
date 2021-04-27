@@ -12,24 +12,26 @@
 #include <stdexcept>
 #include <cstdlib>
 
-# define A_LOG_OUT(x) ::std::cout << x << '\n'
+#include "util/size.h"
 
-# ifdef NDEBUG
+#define A_LOG_OUT(x) ::std::cout << x << '\n'
+
+#ifdef NDEBUG
 #   define ASTRUM_RELEASE
-# else
+#else
 #   define ASTRUM_DEBUG
-# endif
+#endif
 
-# define VOID_ASSEMBLY ((void)0)
+#define VOID_ASSEMBLY ((void)0)
 
-# ifdef ASTRUM_RELEASE
+#ifdef ASTRUM_RELEASE
 #   define A_DEBUG_LOG_OUT(x) VOID_ASSEMBLY
-# else
+#else
 #   define A_DEBUG_LOG_OUT(x) A_LOG_OUT(x)
-# endif
+#endif
 
-# ifdef ASTRUM_RELEASE
+#ifdef ASTRUM_RELEASE
 #   define A_ASSERT(x) VOID_ASSEMBLY
-# else
+#else
 #   define A_ASSERT(x) assert(x)
-# endif
+#endif

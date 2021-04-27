@@ -47,7 +47,7 @@ void Graphics::init()
     vaos[0] = std::make_unique<VAO<Vertex>>(model0, offsets, indices0);
     vaos[1] = std::make_unique<VAO<Vertex>>(model1, offsets, indices1);
 
-    renderTarget = std::make_unique<ScreenFBO>(Window::getWidth(), Window::getHeight());
+    renderTarget = std::make_shared<ScreenFBO>(Window::getSize().width, Window::getSize().height);
 }
 
 void Graphics::update()
@@ -65,7 +65,7 @@ void Graphics::update()
     renderTarget->unbind();
 }
 
-unsigned int Graphics::getRenderTargetTexture() const
+std::shared_ptr<ScreenFBO> & Graphics::getRenderTarget()
 {
-    return renderTarget->getTextureHandle();
+    return renderTarget;
 }

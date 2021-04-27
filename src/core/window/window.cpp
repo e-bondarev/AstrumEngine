@@ -1,38 +1,34 @@
 #include "window.h"
 
-void Window::create(int _width, int _height, const std::string& _title)
-{
-    width = _width;
-    height = _height;
-    title = _title;
+Window::Window() { }
+Window::~Window() { }
 
-    initGlfw();
-    initGlew();
+void Window::create(Size _size, const std::string& _title)
+{
+    auto& self = getInstance();
+    
+    self.size = _size;
+    self.title = _title;
+
+    self.initGlfw();
+    self.initGlew();
 
     A_DEBUG_LOG_OUT("[Call] Window constructor");
 }
 
 void Window::destroy()
 {
-    glfwDestroyWindow(glfwWindow);
+    auto& self = getInstance();
+
+    glfwDestroyWindow(self.glfwWindow);
     glfwTerminate();
 
     A_DEBUG_LOG_OUT("[Call] Window destructor");
 }
 
-int Window::getWidth()
-{
-    return width;
-}
-
-int Window::getHeight()
-{
-    return height;
-}
-
 bool Window::shouldClose()
 {
-    return glfwWindowShouldClose(glfwWindow);
+    return glfwWindowShouldClose(getInstance().getGlfwWindow());
 }
 
 void Window::pollEvents()
@@ -42,12 +38,17 @@ void Window::pollEvents()
 
 void Window::swapBuffers()
 {
-    glfwSwapBuffers(glfwWindow);
+    glfwSwapBuffers(getInstance().getGlfwWindow());
+}    
+
+Size Window::getSize()
+{
+    return getInstance().size;
 }
 
 GLFWwindow* Window::getGlfwWindow()
 {
-    return glfwWindow;
+    return getInstance().glfwWindow;
 }
 
 void Window::initGlfw()
@@ -61,7 +62,7 @@ void Window::initGlfw()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-    glfwWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+    glfwWindow = glfwCreateWindow(size.width, size.height, title.c_str(), nullptr, nullptr);
 
     glfwSetWindowSizeCallback(glfwWindow, onWindowResize);
     
@@ -78,8 +79,15 @@ void Window::initGlew()
 
 void Window::onWindowResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    Window::width = width;
-    Window::height = height;
+    Window::getInstance().size.width = width;
+    Window::getInstance().size.height = height;
 
     glViewport(0, 0, width, height);
+}
+
+Window& Window::getInstance()
+{
+    static Window window;
+
+    return window;
 }

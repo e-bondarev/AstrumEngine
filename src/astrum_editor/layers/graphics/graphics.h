@@ -20,7 +20,8 @@ public:
     void init() override;
     void update() override;
 
-    unsigned int getRenderTargetTexture() const;
+    // unsigned int getRenderTargetTexture() const;
+    std::shared_ptr<ScreenFBO> & getRenderTarget();
 
 private:
     Layers* layers;
@@ -28,7 +29,7 @@ private:
     std::vector<std::unique_ptr<VAO<Vertex>>> vaos;
     std::unique_ptr<Shader> shader;
 
-    std::unique_ptr<ScreenFBO> renderTarget;
+    std::shared_ptr<ScreenFBO> renderTarget;
 
     Graphics(const Graphics&) = delete;
     Graphics& operator=(const Graphics&) = delete;
