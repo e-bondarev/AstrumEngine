@@ -41,17 +41,17 @@ Texture::Texture(
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+Texture::~Texture()
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDeleteTextures(1, &handle);
+}
+
 void Texture::setParamFV(unsigned int name, float *params)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
     glTexParameterfv(GL_TEXTURE_2D, name, params);
     glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-Texture::~Texture()
-{
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDeleteTextures(1, &handle);
 }
 
 void Texture::bind()

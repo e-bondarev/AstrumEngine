@@ -4,13 +4,14 @@ ScreenFBO::ScreenFBO(unsigned int _width, unsigned int _height) : Framebuffer(_w
 {
     beginInit();
 
-    attachments[GL_COLOR_ATTACHMENT0] = new Texture(
+    attachments[GL_COLOR_ATTACHMENT0] = std::make_unique<Texture>(
         width,
         height,
         nullptr,
         GL_RGB,
         GL_RGB,
-        GL_UNSIGNED_BYTE, {
+        GL_UNSIGNED_BYTE, 
+        std::vector<std::tuple<GLParamType, unsigned int, float>> {
             { GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_NEAREST },
             { GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_NEAREST },
         }

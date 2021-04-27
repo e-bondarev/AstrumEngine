@@ -7,11 +7,6 @@ Framebuffer::Framebuffer(const GLuint _width, const GLuint _height, GLbitfield _
 
 Framebuffer::~Framebuffer()
 {
-    for (auto& attachment : attachments)
-    {
-        delete attachment.second;
-    }
-
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDeleteFramebuffers(1, &handle);
 }
@@ -76,12 +71,12 @@ void Framebuffer::unbind()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-const GLuint Framebuffer::getWidth() const
+unsigned int Framebuffer::getWidth() const
 {
     return width;
 }
 
-const GLuint Framebuffer::getHeight() const
+unsigned int Framebuffer::getHeight() const
 {
     return height;
 }

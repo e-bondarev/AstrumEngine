@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include <vector>
+#include <memory>
 #include <map>
 
 class Framebuffer
@@ -19,14 +20,14 @@ public:
     void clear();
     void resize(const unsigned int _width, const unsigned int _height);
 
-    const unsigned int getWidth() const;
-    const unsigned int getHeight() const;
+    unsigned int getWidth() const;
+    unsigned int getHeight() const;
 
 protected:
     unsigned int width;
     unsigned int height;
     
-    std::map<unsigned int, Texture*> attachments;
+    std::map<unsigned int, std::unique_ptr<Texture>> attachments;
 
     unsigned int handle { 0 };
 
