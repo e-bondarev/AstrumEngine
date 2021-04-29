@@ -4,7 +4,7 @@ class Layer
 {
 public:
     Layer();
-    ~Layer();
+    virtual ~Layer();
 
     virtual void init() = 0;
     virtual void update() = 0;

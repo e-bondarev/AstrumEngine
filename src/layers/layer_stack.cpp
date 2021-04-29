@@ -1,11 +1,11 @@
-#include "layer_manager.h"
+#include "layer_stack.h"
 
-LayerManager::LayerManager()
+LayerStack::LayerStack()
 {
 
 }
 
-void LayerManager::init()
+void LayerStack::init()
 {
     for (auto& layer : layers)
     {
@@ -13,7 +13,7 @@ void LayerManager::init()
     }
 }
 
-void LayerManager::update()
+void LayerStack::update()
 {
     for (auto& layer : layers)
     {
@@ -21,7 +21,7 @@ void LayerManager::update()
     }    
 }
 
-void LayerManager::addLayer(std::shared_ptr<Layer> layer)
+void LayerStack::addLayer(std::shared_ptr<Layer> layer)
 {
     layers.push_back(layer);
 }

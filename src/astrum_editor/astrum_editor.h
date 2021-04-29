@@ -2,7 +2,7 @@
 
 #include "core/entry.h"
 #include "core/app.h"
-#include "layers/layer_manager.h"
+#include "layers/layer_stack.h"
 #include "layers/layers.h"
 
 class AstrumEditor : public App

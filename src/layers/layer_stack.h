@@ -4,10 +4,10 @@
 
 #include "pch.h"
 
-class LayerManager
+class LayerStack
 {
 public:
-    LayerManager();
+    LayerStack();
 
     void init();
     void update();

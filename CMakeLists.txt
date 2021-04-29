@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.8)
 
 set(PROJECT_NAME        AstrumEngine)
 set(PROJECT_VERSION     0.0.1)

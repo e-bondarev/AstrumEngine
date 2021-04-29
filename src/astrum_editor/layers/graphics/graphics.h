@@ -20,8 +20,7 @@ public:
     void init() override;
     void update() override;
 
-    // unsigned int getRenderTargetTexture() const;
-    std::shared_ptr<ScreenFBO> & getRenderTarget();
+    std::shared_ptr<ScreenFBO>& getRenderTarget();
 
 private:
     Layers* layers;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "layers/layer_manager.h"
+#include "layers/layer_stack.h"
 
 class App
 {
@@ -10,5 +10,5 @@ public:
     virtual void update() = 0;
 
 protected:
-    LayerManager layerManager;
+    LayerStack layerStack;
 };
