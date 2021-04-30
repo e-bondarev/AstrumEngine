@@ -75,6 +75,8 @@ void Window::initGlfw()
 void Window::initGlew()
 {
     glewInit();
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Window::onWindowResize(GLFWwindow* glfwWindow, int width, int height)

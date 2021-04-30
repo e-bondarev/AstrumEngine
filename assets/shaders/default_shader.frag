@@ -11,5 +11,5 @@ out vec4 out_Color;
 
 void main()
 {
-   out_Color = vec4(vsOut.uv.x, vsOut.uv.y, 0.0, 1.0);
+   out_Color = vec4(vsOut.normal, 1.0);
 }

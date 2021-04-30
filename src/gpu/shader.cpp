@@ -98,10 +98,12 @@ void Shader::unbind()
 
 void Shader::createUniform(const std::string &name)
 {
+    int location = glGetUniformLocation(handle, name.c_str());
+
     uniformLocations.insert(
         std::pair<std::string, int>(
             name.c_str(), 
-            glGetUniformLocation(handle, name.c_str())
+            location
         )
     );
 }
@@ -134,13 +136,17 @@ void Shader::setInt(const std::string &name, int value)
 
 void Shader::setMat4x4(const std::string &name, float const* const matrix)
 {
+#define A_SHADER_DEBUG 
+
 #ifdef A_SHADER_DEBUG
-    if (locations.find(name) == locations.end())
+    if (uniformLocations.find(name) == uniformLocations.end())
     {
         A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setMat4x4()]: Variable " << name << " doesn't exist.");
         return;
     }
 #endif
+
+    A_LOG_OUT(uniformLocations.at(name));
 
     glUniformMatrix4fv(uniformLocations.at(name), 1, GL_FALSE, matrix);
 }
@@ -148,7 +154,7 @@ void Shader::setMat4x4(const std::string &name, float const* const matrix)
 void Shader::setVec3(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
-    if (locations.find(name) == locations.end())
+    if (uniformLocations.find(name) == uniformLocations.end())
     {
         A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: set_vec3()]: Variable " << name << " doesn't exist.");
         return;
@@ -161,7 +167,7 @@ void Shader::setVec3(const std::string &name, float const* const vec)
 void Shader::setVec4(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
-    if (locations.find(name) == locations.end())
+    if (uniformLocations.find(name) == uniformLocations.end())
     {
         A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setVec4()]: Variable " << name << " doesn't exist.");
         return;
@@ -173,8 +179,9 @@ void Shader::setVec4(const std::string &name, float const* const vec)
 
 void Shader::setListMat4x4(const std::string &name, float const* const list, unsigned int size)
 {
+
 #ifdef A_SHADER_DEBUG
-    if (locations.find(name) == locations.end())
+    if (uniformLocations.find(name) == uniformLocations.end())
     {
         A_LOG_OUT("[DEBUG, File: astrum_gpu/shader.h, Function: setListMat4x4()]: Variable " << name << " doesn't exist.");
         return;

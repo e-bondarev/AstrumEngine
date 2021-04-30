@@ -20,9 +20,16 @@ public:
             glGenBuffers(1, &vbo);    
             glBindBuffer(GL_ARRAY_BUFFER, vbo);        
                 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(T_Vertex), &vertices[0], GL_STATIC_DRAW);
+                attributes[0] = 0;
+                attributes[1] = 1;
+                attributes[2] = 2;
+
+                // glVertexAttribPointer(0, )
                 for (int i = 0; i < offsets.size(); i++)
                 {
-                    glVertexAttribPointer(i, vertices.size(), GL_FLOAT, GL_FALSE, sizeof(T_Vertex), reinterpret_cast<void*>(offsets[i]));     
+                    int s = i != 1 ? 3 : 2;
+
+                    glVertexAttribPointer(i, s, GL_FLOAT, GL_FALSE, sizeof(T_Vertex), reinterpret_cast<void*>(offsets[i]));     
                     attributes[i] = i;
                 }
             glBindBuffer(GL_ARRAY_BUFFER, 0);
