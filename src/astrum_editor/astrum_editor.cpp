@@ -5,8 +5,8 @@
 
 void AstrumEditor::CreateLayers()
 {
-    m_Layers.GUI = std::make_shared<GUILayer>(&m_Layers);
-    m_Layers.Graphics = std::make_shared<GraphicsLayer>(&m_Layers);
+    m_Layers.GUI = std::make_shared<GUILayer>(m_Layers);
+    m_Layers.Graphics = std::make_shared<GraphicsLayer>(m_Layers);
 
     layerStack.PushLayer(m_Layers.GUI);
     layerStack.PushLayer(m_Layers.Graphics);

@@ -18,7 +18,7 @@
 class GraphicsLayer : public Layer
 {
 public:
-    GraphicsLayer(Layers* layers);
+    GraphicsLayer(Layers& layers);
     ~GraphicsLayer();
 
     void OnAttach() override;
@@ -39,7 +39,7 @@ private:
         void AddToQueue(const std::string& path);
     } m_Async;
 
-    Layers* m_Layers;
+    Layers& m_Layers;
 
     struct {
         Mat4 model{ Mat4(1) };

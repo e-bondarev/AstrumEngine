@@ -13,14 +13,14 @@
 class GUILayer : public Layer
 {
 public: 
-    GUILayer(Layers* layers);
+    GUILayer(Layers& layers);
     ~GUILayer();
 
     void OnAttach() override;
     void OnUpdate() override;
 
 private:
-    Layers* m_Layers;
+    Layers& m_Layers;
 
     void NewFrame();
     void Render();

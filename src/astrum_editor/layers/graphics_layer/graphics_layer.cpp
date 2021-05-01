@@ -1,7 +1,7 @@
 #include "graphics_layer.h"
 #include "core/window/window.h"
 
-GraphicsLayer::GraphicsLayer(Layers* layers) : m_Layers { layers }
+GraphicsLayer::GraphicsLayer(Layers& layers) : m_Layers { layers }
 {
     A_DEBUG_LOG_OUT("[Call] Graphics constructor");
 }

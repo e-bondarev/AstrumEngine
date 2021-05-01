@@ -10,7 +10,7 @@
 
 #include "assets/asset.h"
 
-GUILayer::GUILayer(Layers* layers) : m_Layers { layers }
+GUILayer::GUILayer(Layers& layers) : m_Layers { layers }
 {
     A_DEBUG_LOG_OUT("[Call] GUI constructor");
 }
@@ -71,13 +71,13 @@ void GUILayer::OnUpdate()
     m_Inspector->Render();
     m_Assets->Render();
 
-    Size size = m_Viewport->Render(m_Layers->Graphics->GetRenderTarget());
+    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget());
 
     if (size != m_LastViewportSize)
     {
         m_LastViewportSize = size;
-        m_Layers->Graphics->GetRenderTarget()->Resize(size);
-        m_Layers->Graphics->OnViewportResize(size);
+        m_Layers.Graphics->GetRenderTarget()->Resize(size);
+        m_Layers.Graphics->OnViewportResize(size);
         glViewport(0, 0, size.Width, size.Height);
     }
 
