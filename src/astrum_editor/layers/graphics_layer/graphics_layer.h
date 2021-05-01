@@ -11,8 +11,6 @@
 
 #include "math/math.h"
 
-#include "pch.h"
-
 #include <future>
 
 class GraphicsLayer : public Layer

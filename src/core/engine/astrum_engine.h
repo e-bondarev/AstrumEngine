@@ -2,8 +2,6 @@
 
 #include "../window/window.h"
 
-#include "pch.h"
-
 template <typename T>
 class AstrumEngine
 {

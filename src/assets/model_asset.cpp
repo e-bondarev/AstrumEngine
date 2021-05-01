@@ -1,4 +1,10 @@
+#include "pch.h"
+
 #include "model_asset.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 void ModelAsset::Load(const std::string& path)
 {

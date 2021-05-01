@@ -11,12 +11,12 @@ out VSOutput
    vec3 normal;
 } vsOut;
 
-uniform mat4 projMat;
-uniform mat4 modelMat;
+uniform mat4 u_Projection;
+uniform mat4 u_Model;
 
 void main()
 {
-   gl_Position = projMat * modelMat * vec4(position.x, position.y, position.z, 1.0);
+   gl_Position = u_Projection * u_Model * vec4(position.x, position.y, position.z, 1.0);
 
    vsOut.position = position;
    vsOut.uv = uv;

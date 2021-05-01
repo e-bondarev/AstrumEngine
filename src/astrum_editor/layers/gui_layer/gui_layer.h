@@ -10,8 +10,6 @@
 #include "elements/inspector/inspector.h"
 #include "elements/assets/assets.h"
 
-#include "pch.h"
-
 class GUILayer : public Layer
 {
 public: 

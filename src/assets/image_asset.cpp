@@ -1,6 +1,7 @@
+#include "pch.h"
+
 #include "image_asset.h"
 
-//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image/stb_image.h"
 
 void ImageAsset::Load(const std::string& path)

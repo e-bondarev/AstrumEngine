@@ -2,8 +2,6 @@
 
 #include "layer.h"
 
-#include "pch.h"
-
 class LayerStack
 {
 public:

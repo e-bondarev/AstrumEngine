@@ -2,6 +2,8 @@
 
 #include "asset.h"
 
+#include "gpu/vertex_layouts/vertex.h"
+
 struct ModelAsset : public Asset
 {
     std::vector<Vertex> Vertices;

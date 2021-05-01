@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pch.h"
-
 #include "../../common/vertex_buffer_layout.h"
 
 #include "common/opengl_object.h"

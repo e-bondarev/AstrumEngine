@@ -2,8 +2,6 @@
 
 #include "gpu/backends/opengl/screen_fbo.h"
 
-#include "pch.h"
-
 class Viewport
 {
 public:

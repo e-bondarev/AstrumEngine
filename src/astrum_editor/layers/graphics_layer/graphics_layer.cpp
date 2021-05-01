@@ -24,8 +24,8 @@ void GraphicsLayer::OnAttach()
 
     TextAsset vsCodeAsset("assets/shaders/default_shader.vert");
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
+    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model");
 
-    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "projMat", "modelMat");
     OnViewportResize(windowSize);
     
     ModelAsset modelAsset("assets/models/cube.fbx");
@@ -47,8 +47,8 @@ void GraphicsLayer::OnAttach()
         GL_RGB,
         GL_UNSIGNED_BYTE,
         std::vector<OpenGL::Texture::param_t> {
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_NEAREST },
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_NEAREST },
+            { OpenGL::GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_LINEAR },
+            { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_LINEAR },
         }
     );
 }
@@ -63,8 +63,8 @@ void GraphicsLayer::OnUpdate()
     m_RenderTarget->Bind();
     m_RenderTarget->Clear();
         m_Shader->Bind();
-            m_Shader->SetMat4x4("projMat", Math::ToPtr(m_SceneUBO.projection));
-            m_Shader->SetMat4x4("modelMat", Math::ToPtr(m_SceneUBO.model));
+            m_Shader->SetMat4x4("u_Projection", Math::ToPtr(m_SceneUBO.projection));
+            m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_SceneUBO.model));
             for (const auto& vao : m_VAOs)
             {
                 m_Texture->Bind();
