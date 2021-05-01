@@ -7,9 +7,11 @@ in VSOutput
    vec3 normal;
 } vsOut;
 
+uniform sampler2D u_Texture;
+
 out vec4 out_Color;
 
 void main()
 {
-   out_Color = vec4(vsOut.normal, 1.0);
+   out_Color = texture(u_Texture, vsOut.uv);
 }

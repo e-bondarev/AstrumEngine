@@ -5,6 +5,7 @@
 #include "assets/asset.h"
 #include "assets/text_asset.h"
 #include "assets/model_asset.h"
+#include "assets/image_asset.h"
 
 GraphicsLayer::GraphicsLayer(Layers* layers) : m_Layers { layers }
 {
@@ -36,6 +37,20 @@ void GraphicsLayer::OnAttach()
     };
 
     m_VAOs.emplace_back(std::make_unique<OpenGL::VAO>(modelAsset.Vertices, layouts, modelAsset.Indices));
+
+    ImageAsset imageAsset("assets/textures/brick.jpg");
+
+    m_Texture = std::make_unique<OpenGL::Texture>(
+        imageAsset.Size, 
+        imageAsset.Data,
+        GL_RGB,
+        GL_RGB,
+        GL_UNSIGNED_BYTE,
+        std::vector<OpenGL::Texture::param_t> {
+            { OpenGL::GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_NEAREST },
+            { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_NEAREST },
+        }
+    );
 }
 
 void GraphicsLayer::OnUpdate()
@@ -52,9 +67,11 @@ void GraphicsLayer::OnUpdate()
             m_Shader->SetMat4x4("modelMat", Math::ToPtr(m_SceneUBO.model));
             for (const auto& vao : m_VAOs)
             {
+                m_Texture->Bind();
                 vao->Bind();
                     glDrawElements(GL_TRIANGLES, vao->GetVertexCount(), GL_UNSIGNED_INT, nullptr);
                 vao->Unbind();
+                m_Texture->Unbind();
             }
         m_Shader->Unbind();
     m_RenderTarget->Unbind();

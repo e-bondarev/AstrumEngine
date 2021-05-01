@@ -38,6 +38,7 @@ private:
 
     std::vector<std::unique_ptr<OpenGL::VAO>> m_VAOs;
     std::unique_ptr<OpenGL::Shader> m_Shader;
+    std::unique_ptr<OpenGL::Texture> m_Texture;
 
     std::shared_ptr<OpenGL::ScreenFBO> m_RenderTarget;
 

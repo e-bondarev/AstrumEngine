@@ -16,11 +16,3 @@ struct Asset
 {
     virtual void Load(const std::string& path) = 0;
 };
-
-struct ImageAsset : public Asset
-{
-    void Load(const std::string& path) override
-    {
-        
-    }
-};
