@@ -4,6 +4,8 @@
 #include "../gui_layer/gui_layer.h"
 #include "../layers.h"
 
+#include "assets/assets.h"
+
 #include "gpu/backends/opengl/vao.h"
 #include "gpu/backends/opengl/shader.h"
 #include "gpu/backends/opengl/screen_fbo.h"
@@ -27,6 +29,16 @@ public:
     std::shared_ptr<OpenGL::ScreenFBO>& GetRenderTarget();
 
 private:
+    struct Async 
+    {
+        std::vector<ModelAsset> modelQueue;
+        std::mutex lock;
+        std::vector<std::future<void>> futures;
+
+        void CheckLoadingQueue(std::vector<std::shared_ptr<OpenGL::VAO>>& vaos);
+        void AddToQueue(const std::string& path);
+    } m_Async;
+
     Layers* m_Layers;
 
     struct {
@@ -34,7 +46,7 @@ private:
         Mat4 projection{ Mat4(1) };
     } m_SceneUBO;
 
-    std::vector<std::unique_ptr<OpenGL::VAO>> m_VAOs;
+    std::vector<std::shared_ptr<OpenGL::VAO>> m_VAOs;
     std::unique_ptr<OpenGL::Shader> m_Shader;
     std::unique_ptr<OpenGL::Texture> m_Texture;
 
