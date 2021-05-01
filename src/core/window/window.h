@@ -8,27 +8,27 @@
 class Window
 {
 public:
-    static void create(Size size = { 800, 600 }, const std::string& title = "Astrum app");
-    static void destroy();
+    static void Create(Size size = { 800, 600 }, const std::string& title = "Astrum app");
+    static void Destroy();
 
-    static bool shouldClose();
+    static bool ShouldClose();
 
-    static void pollEvents();
-    static void swapBuffers();
+    static void PollEvents();
+    static void SwapBuffers();
 
-    static Size getSize();
-    static GLFWwindow* getGlfwWindow();
+    static Size GetSize();
+    static GLFWwindow* GetGlfwWindow();
 
 private:
-    Size size;
-    std::string title;
-    GLFWwindow* glfwWindow;
+    Size m_Size;
+    std::string m_Title;
+    GLFWwindow* m_GlfwWindow;
 
-    void initGlfw();
-    void initGlew();
+    void InitGlfw();
+    void InitGlew();
 
-    static void onWindowResize(GLFWwindow* glfwWindow, int width, int height);
-    static Window& getInstance();
+    static void OnWindowResize(GLFWwindow* glfwWindow, int width, int height);
+    static Window& GetInstance();
 
     Window();
     ~Window();

@@ -6,8 +6,8 @@ public:
     Layer();
     virtual ~Layer();
 
-    virtual void init() = 0;
-    virtual void update() = 0;
+    virtual void OnAttach() = 0;
+    virtual void OnUpdate() = 0;
 
 private:
     Layer(const Layer&) = delete;

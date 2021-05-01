@@ -2,12 +2,12 @@
 
 struct Size
 {
-    float width;
-    float height;
+    float Width;
+    float Height;
 
     inline bool operator==(const Size& a) const
     {
-        return width == a.width && height == a.height;
+        return Width == a.Width && Height == a.Height;
     }
 
     inline bool operator!=(const Size& a) const

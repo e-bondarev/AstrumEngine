@@ -8,32 +8,31 @@ template <typename T>
 class AstrumEngine
 {
 private:
-    std::unique_ptr<T> app;
+    std::unique_ptr<T> m_App;
 
 public:
     AstrumEngine()
     {
-        // window = std::make_unique<Window>();
-        Window::create();
-        app = std::make_unique<T>();
-        app->createLayers();
-        app->init();
+        Window::Create();
+        m_App = std::make_unique<T>();
+        m_App->CreateLayers();
+        m_App->Init();
     }
 
     ~AstrumEngine()
     {
-        Window::destroy();
+        Window::Destroy();
     }
 
-    void run()
+    void Run()
     {
-        while (!Window::shouldClose())
+        while (!Window::ShouldClose())
         {
-            Window::pollEvents();
+            Window::PollEvents();
 
-            app->update();
+            m_App->Update();
 
-            Window::swapBuffers();
+            Window::SwapBuffers();
         }
     }
 };

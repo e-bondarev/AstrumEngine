@@ -3,5 +3,5 @@
 class Dockspace
 {
 public:
-    void render(); 
+    void Render(); 
 };

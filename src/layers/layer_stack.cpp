@@ -5,23 +5,23 @@ LayerStack::LayerStack()
 
 }
 
-void LayerStack::init()
+void LayerStack::Attach()
 {
-    for (auto& layer : layers)
+    for (auto& layer : m_Layers)
     {
-        layer->init();
+        layer->OnAttach();
     }
 }
 
-void LayerStack::update()
+void LayerStack::Update()
 {
-    for (auto& layer : layers)
+    for (auto& layer : m_Layers)
     {
-        layer->update();
+        layer->OnUpdate();
     }    
 }
 
-void LayerStack::addLayer(std::shared_ptr<Layer> layer)
+void LayerStack::PushLayer(std::shared_ptr<Layer> layer)
 {
-    layers.push_back(layer);
+    m_Layers.push_back(layer);
 }

@@ -5,8 +5,7 @@
 Shader::Shader(
     const std::string &vsCode,
     const std::string &fsCode,
-    const str_list_t& uniformVariables,
-    const str_list_t& inputVariables
+    const str_list_t& uniformVariables
 )
 {
     handle = glCreateProgram();
@@ -21,17 +20,12 @@ Shader::Shader(
         createUniform(uniformVariables[i]);
     }
 
-    for (int i = 0; i < inputVariables.size(); i++)
-    {
-        glBindAttribLocation(handle, i, inputVariables[i].c_str());
-    }
-
     A_DEBUG_LOG_OUT("[Call] Shader constructor");
 }
 
 Shader::~Shader()
 {
-    unbind();
+    Unbind();
     glDetachShader(handle, vsHandle);
     glDetachShader(handle, fsHandle);
     glDeleteShader(vsHandle);
@@ -86,12 +80,12 @@ unsigned int Shader::createShader(const std::string &shaderCode, unsigned int sh
     return shaderID;
 }
 
-void Shader::bind()
+void Shader::Bind()
 {
     glUseProgram(handle);
 }
 
-void Shader::unbind()
+void Shader::Unbind()
 {
     glUseProgram(0);
 }
@@ -134,10 +128,8 @@ void Shader::setInt(const std::string &name, int value)
     glUniform1i(uniformLocations.at(name), value);
 }
 
-void Shader::setMat4x4(const std::string &name, float const* const matrix)
+void Shader::SetMat4x4(const std::string &name, float const* const matrix)
 {
-#define A_SHADER_DEBUG 
-
 #ifdef A_SHADER_DEBUG
     if (uniformLocations.find(name) == uniformLocations.end())
     {
@@ -145,8 +137,6 @@ void Shader::setMat4x4(const std::string &name, float const* const matrix)
         return;
     }
 #endif
-
-    A_LOG_OUT(uniformLocations.at(name));
 
     glUniformMatrix4fv(uniformLocations.at(name), 1, GL_FALSE, matrix);
 }

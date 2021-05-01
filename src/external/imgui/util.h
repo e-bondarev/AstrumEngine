@@ -27,8 +27,8 @@ namespace ImGuiUtil
         boundaries.pos.x = vMin.x;
         boundaries.pos.y = vMin.y;
 
-        boundaries.size.width = vMax.x - vMin.x;
-        boundaries.size.height = vMax.y - vMin.y;
+        boundaries.size.Width = vMax.x - vMin.x;
+        boundaries.size.Height = vMax.y - vMin.y;
 
         return boundaries;
     }

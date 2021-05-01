@@ -8,7 +8,7 @@ int main()                                  \
     AstrumEngine<x> app;                    \
     try                                     \
     {                                       \
-        app.run();                          \
+        app.Run();                          \
     }                                       \
     catch (const std::exception& exception) \
     {                                       \

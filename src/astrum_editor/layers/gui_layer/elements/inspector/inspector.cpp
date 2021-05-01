@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-void Inspector::render()
+void Inspector::Render()
 {
     ImGui::Begin("Inspector");
 

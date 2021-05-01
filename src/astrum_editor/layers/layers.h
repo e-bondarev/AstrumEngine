@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
-
-class GUI;
-class Graphics;
+class GUILayer;
+class GraphicsLayer;
 
 struct Layers
 {
-    std::shared_ptr<GUI> gui;
-    std::shared_ptr<Graphics> graphics;
+    std::shared_ptr<GUILayer> GUI;
+    std::shared_ptr<GraphicsLayer> Graphics;
 };

@@ -3,5 +3,5 @@
 class Assets
 {
 public:
-    void render(); 
+    void Render(); 
 };

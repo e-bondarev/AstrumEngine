@@ -3,55 +3,55 @@
 Window::Window() { }
 Window::~Window() { }
 
-void Window::create(Size _size, const std::string& _title)
+void Window::Create(Size size, const std::string& title)
 {
-    auto& self = getInstance();
+    auto& self = GetInstance();
     
-    self.size = _size;
-    self.title = _title;
+    self.m_Size = size;
+    self.m_Title = title;
 
-    self.initGlfw();
-    self.initGlew();
+    self.InitGlfw();
+    self.InitGlew();
 
     A_DEBUG_LOG_OUT("[Call] Window constructor");
 }
 
-void Window::destroy()
+void Window::Destroy()
 {
-    auto& self = getInstance();
+    auto& self = GetInstance();
 
-    glfwDestroyWindow(self.glfwWindow);
+    glfwDestroyWindow(self.m_GlfwWindow);
     glfwTerminate();
 
     A_DEBUG_LOG_OUT("[Call] Window destructor");
 }
 
-bool Window::shouldClose()
+bool Window::ShouldClose()
 {
-    return glfwWindowShouldClose(getInstance().getGlfwWindow());
+    return glfwWindowShouldClose(GetInstance().GetGlfwWindow());
 }
 
-void Window::pollEvents()
+void Window::PollEvents()
 {
     glfwPollEvents();
 }
 
-void Window::swapBuffers()
+void Window::SwapBuffers()
 {
-    glfwSwapBuffers(getInstance().getGlfwWindow());
+    glfwSwapBuffers(GetInstance().GetGlfwWindow());
 }    
 
-Size Window::getSize()
+Size Window::GetSize()
 {
-    return getInstance().size;
+    return GetInstance().m_Size;
 }
 
-GLFWwindow* Window::getGlfwWindow()
+GLFWwindow* Window::GetGlfwWindow()
 {
-    return getInstance().glfwWindow;
+    return GetInstance().m_GlfwWindow;
 }
 
-void Window::initGlfw()
+void Window::InitGlfw()
 {
     glfwInit();
 
@@ -62,32 +62,32 @@ void Window::initGlfw()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-    glfwWindow = glfwCreateWindow(size.width, size.height, title.c_str(), nullptr, nullptr);
+    m_GlfwWindow = glfwCreateWindow(m_Size.Width, m_Size.Height, m_Title.c_str(), nullptr, nullptr);
 
-    glfwSetWindowSizeCallback(glfwWindow, onWindowResize);
+    glfwSetWindowSizeCallback(m_GlfwWindow, OnWindowResize);
     
-    glfwMakeContextCurrent(glfwWindow);
+    glfwMakeContextCurrent(m_GlfwWindow);
     glfwSwapInterval(1);
-    glfwShowWindow(glfwWindow);
-    glfwMaximizeWindow(glfwWindow);
+    glfwShowWindow(m_GlfwWindow);
+    glfwMaximizeWindow(m_GlfwWindow);
 }
 
-void Window::initGlew()
+void Window::InitGlew()
 {
     glewInit();
 
     glEnable(GL_DEPTH_TEST);
 }
 
-void Window::onWindowResize(GLFWwindow* glfwWindow, int width, int height)
+void Window::OnWindowResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    Window::getInstance().size.width = width;
-    Window::getInstance().size.height = height;
+    Window::GetInstance().m_Size.Width = width;
+    Window::GetInstance().m_Size.Height = height;
 
     glViewport(0, 0, width, height);
 }
 
-Window& Window::getInstance()
+Window& Window::GetInstance()
 {
     static Window window;
 

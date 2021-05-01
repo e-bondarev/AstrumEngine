@@ -9,11 +9,11 @@ class LayerStack
 public:
     LayerStack();
 
-    void init();
-    void update();
+    void Attach();
+    void Update();
 
-    void addLayer(std::shared_ptr<Layer> layer);
+    void PushLayer(std::shared_ptr<Layer> layer);
 
 private:
-    std::vector<std::shared_ptr<Layer>> layers;
+    std::vector<std::shared_ptr<Layer>> m_Layers;
 };

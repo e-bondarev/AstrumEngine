@@ -8,12 +8,12 @@
 class AstrumEditor : public App
 {
 public:
-    void createLayers() override;
-    void init() override;
-    void update() override;
+    void CreateLayers() override;
+    void Init() override;
+    void Update() override;
 
 private:
-    Layers layers;
+    Layers m_Layers;
 };
 
 A_ENTRY(AstrumEditor)

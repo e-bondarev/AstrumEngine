@@ -5,9 +5,9 @@
 class App
 {
 public:
-    virtual void createLayers() = 0;
-    virtual void init() = 0;
-    virtual void update() = 0;
+    virtual void CreateLayers() = 0;
+    virtual void Init() = 0;
+    virtual void Update() = 0;
 
 protected:
     LayerStack layerStack;

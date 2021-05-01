@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-void Scene::render()
+void Scene::Render()
 {
     ImGui::Begin("Scene view");
 

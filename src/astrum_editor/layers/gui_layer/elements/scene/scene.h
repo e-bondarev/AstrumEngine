@@ -3,5 +3,5 @@
 class Scene
 {
 public:
-    void render();    
+    void Render();    
 };

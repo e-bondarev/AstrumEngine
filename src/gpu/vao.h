@@ -4,13 +4,20 @@
 
 #include <GL/glew.h>
 
+struct VertexBufferLayout
+{
+    size_t size   { 0 };
+    size_t stride { 0 };
+    size_t offset { 0 };
+};
+
 template <typename T_Vertex>
 class VAO
 {
 public:
-    VAO(const std::vector<T_Vertex>& vertices, const std::vector<size_t>& offsets, const std::vector<int>& indices)
+    VAO(const std::vector<T_Vertex>& vertices, const std::vector<VertexBufferLayout>& layouts, const std::vector<int>& indices)
     {
-        attributes.resize(offsets.size());
+        attributes.resize(layouts.size());
 
         glGenVertexArrays(1, &handle);
 
@@ -20,16 +27,9 @@ public:
             glGenBuffers(1, &vbo);    
             glBindBuffer(GL_ARRAY_BUFFER, vbo);        
                 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(T_Vertex), &vertices[0], GL_STATIC_DRAW);
-                attributes[0] = 0;
-                attributes[1] = 1;
-                attributes[2] = 2;
-
-                // glVertexAttribPointer(0, )
-                for (int i = 0; i < offsets.size(); i++)
+                for (int i = 0; i < layouts.size(); i++)
                 {
-                    int s = i != 1 ? 3 : 2;
-
-                    glVertexAttribPointer(i, s, GL_FLOAT, GL_FALSE, sizeof(T_Vertex), reinterpret_cast<void*>(offsets[i]));     
+                    glVertexAttribPointer(i, layouts[i].size, GL_FLOAT, GL_FALSE, layouts[i].stride, reinterpret_cast<void*>(layouts[i].offset));     
                     attributes[i] = i;
                 }
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -50,14 +50,14 @@ public:
 
     ~VAO()
     {
-        unbind();
+        Unbind();
         glDeleteBuffers(buffers.size(), buffers.data());
         glDeleteVertexArrays(1, &handle);
 
         A_DEBUG_LOG_OUT("[Call] VAO destructor");
     }
 
-    void bind() const
+    void Bind() const
     {
         glBindVertexArray(handle);
 
@@ -69,7 +69,7 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVboHandle);
     }
 
-    void unbind() const
+    void Unbind() const
     {
         glBindVertexArray(0);
 
@@ -81,7 +81,7 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    unsigned int getVertexCount() const
+    unsigned int GetVertexCount() const
     {
         return vertexCount;
     }

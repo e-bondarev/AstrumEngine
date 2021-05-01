@@ -43,12 +43,12 @@ void Framebuffer::endInit()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Framebuffer::bind()
+void Framebuffer::Bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 }
 
-void Framebuffer::clear()
+void Framebuffer::Clear()
 {
     glClear(buffersToClear);
 }
@@ -66,7 +66,7 @@ void Framebuffer::resize(const GLuint _width, const GLuint _height)
     }
 }
 
-void Framebuffer::unbind()
+void Framebuffer::Unbind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

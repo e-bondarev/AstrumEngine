@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-void Dockspace::render()
+void Dockspace::Render()
 {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	

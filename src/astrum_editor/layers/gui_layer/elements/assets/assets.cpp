@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-void Assets::render()
+void Assets::Render()
 {
 	ImGui::Begin("Assets");
 	ImGui::End();

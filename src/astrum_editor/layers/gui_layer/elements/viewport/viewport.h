@@ -7,8 +7,8 @@
 class Viewport
 {
 public:
-    void render(std::shared_ptr<ScreenFBO> & renderTarget);
+    void Render(std::shared_ptr<ScreenFBO> & renderTarget);
 
 private:
-    Size size;
+    Size m_Size;
 };

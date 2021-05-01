@@ -14,10 +14,10 @@ public:
     Framebuffer(const unsigned int _width, const unsigned int _height, unsigned int _buffersToClear, const std::vector<unsigned int>& _drawBuffers = {});
     virtual ~Framebuffer();
 
-    void bind();
-    void unbind();
+    void Bind();
+    void Unbind();
 
-    void clear();
+    void Clear();
     void resize(const unsigned int _width, const unsigned int _height);
 
     unsigned int getWidth() const;

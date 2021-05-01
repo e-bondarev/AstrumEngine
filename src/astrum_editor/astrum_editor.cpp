@@ -1,23 +1,23 @@
 #include "astrum_editor.h"
 
-#include "layers/gui/gui.h"
-#include "layers/graphics/graphics.h"
+#include "layers/gui_layer/gui_layer.h"
+#include "layers/graphics_layer/graphics_layer.h"
 
-void AstrumEditor::createLayers()
+void AstrumEditor::CreateLayers()
 {
-    layers.gui = std::make_shared<GUI>(&layers);
-    layers.graphics = std::make_shared<Graphics>(&layers);
+    m_Layers.GUI = std::make_shared<GUILayer>(&m_Layers);
+    m_Layers.Graphics = std::make_shared<GraphicsLayer>(&m_Layers);
 
-    layerStack.addLayer(layers.gui);
-    layerStack.addLayer(layers.graphics);
+    layerStack.PushLayer(m_Layers.GUI);
+    layerStack.PushLayer(m_Layers.Graphics);
 }
 
-void AstrumEditor::init()
+void AstrumEditor::Init()
 {
-    layerStack.init();
+    layerStack.Attach();
 }
 
-void AstrumEditor::update()
+void AstrumEditor::Update()
 {
-    layerStack.update();
+    layerStack.Update();
 }

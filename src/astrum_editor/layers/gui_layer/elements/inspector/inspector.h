@@ -3,5 +3,5 @@
 class Inspector
 {
 public:
-    void render();
+    void Render();
 };
