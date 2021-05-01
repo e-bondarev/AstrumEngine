@@ -6,9 +6,9 @@
 
 struct VertexBufferLayout
 {
-    size_t size   { 0 };
-    size_t stride { 0 };
-    size_t offset { 0 };
+    size_t Size   { 0 };
+    size_t Stride { 0 };
+    size_t Offset { 0 };
 };
 
 template <typename T_Vertex>
@@ -29,7 +29,7 @@ public:
                 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(T_Vertex), &vertices[0], GL_STATIC_DRAW);
                 for (int i = 0; i < layouts.size(); i++)
                 {
-                    glVertexAttribPointer(i, layouts[i].size, GL_FLOAT, GL_FALSE, layouts[i].stride, reinterpret_cast<void*>(layouts[i].offset));     
+                    glVertexAttribPointer(i, layouts[i].Size, GL_FLOAT, GL_FALSE, layouts[i].Stride, reinterpret_cast<void*>(layouts[i].Offset));     
                     attributes[i] = i;
                 }
             glBindBuffer(GL_ARRAY_BUFFER, 0);

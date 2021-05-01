@@ -17,12 +17,12 @@ void ModelAsset::Load(const std::string& path)
 
     for (int v = 0; v < mesh->mNumVertices; v++)
     {
-        Vertices[v].position = { mesh->mVertices[v].x, mesh->mVertices[v].y, mesh->mVertices[v].z };
-        Vertices[v].normal = { mesh->mNormals[v].x, mesh->mNormals[v].y, mesh->mNormals[v].z };
+        Vertices[v].Position = { mesh->mVertices[v].x, mesh->mVertices[v].y, mesh->mVertices[v].z };
+        Vertices[v].Normal = { mesh->mNormals[v].x, mesh->mNormals[v].y, mesh->mNormals[v].z };
 
         if (mesh->mTextureCoords[0])
         {
-            Vertices[v].uv = { mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y };
+            Vertices[v].UV = { mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y };
         }
     }
 

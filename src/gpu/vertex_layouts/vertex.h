@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "math/math.h"
 
 struct Vertex
 {
-    glm::vec3 position;
-    glm::vec2 uv;
-    glm::vec3 normal;
+    Vec3 Position;
+    Vec2 UV;
+    Vec3 Normal;
 };

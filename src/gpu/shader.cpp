@@ -10,14 +10,14 @@ Shader::Shader(
 {
     handle = glCreateProgram();
 
-    vsHandle = createShader(vsCode, GL_VERTEX_SHADER);
-    fsHandle = createShader(fsCode, GL_FRAGMENT_SHADER);
+    vsHandle = CreateShader(vsCode, GL_VERTEX_SHADER);
+    fsHandle = CreateShader(fsCode, GL_FRAGMENT_SHADER);
 
-    link();
+    Link();
 
     for (int i = 0; i < uniformVariables.size(); i++)
     {
-        createUniform(uniformVariables[i]);
+        CreateUniform(uniformVariables[i]);
     }
 
     A_DEBUG_LOG_OUT("[Call] Shader constructor");
@@ -35,7 +35,7 @@ Shader::~Shader()
     A_DEBUG_LOG_OUT("[Call] Shader destructor");
 }
 
-void Shader::link() const
+void Shader::Link() const
 {
     glLinkProgram(handle);
 
@@ -52,7 +52,7 @@ void Shader::link() const
     glValidateProgram(handle);
 }
 
-unsigned int Shader::createShader(const std::string &shaderCode, unsigned int shaderType)
+unsigned int Shader::CreateShader(const std::string &shaderCode, unsigned int shaderType)
 {
     const unsigned int shaderID = glCreateShader(shaderType);
 
@@ -80,17 +80,17 @@ unsigned int Shader::createShader(const std::string &shaderCode, unsigned int sh
     return shaderID;
 }
 
-void Shader::Bind()
+void Shader::Bind() const
 {
     glUseProgram(handle);
 }
 
-void Shader::Unbind()
+void Shader::Unbind() const
 {
     glUseProgram(0);
 }
 
-void Shader::createUniform(const std::string &name)
+void Shader::CreateUniform(const std::string &name)
 {
     int location = glGetUniformLocation(handle, name.c_str());
 
@@ -102,7 +102,7 @@ void Shader::createUniform(const std::string &name)
     );
 }
 
-void Shader::setFloat(const std::string &name, float value)
+void Shader::SetFloat(const std::string &name, float value)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -115,7 +115,7 @@ void Shader::setFloat(const std::string &name, float value)
     glUniform1f(uniformLocations.at(name), value);
 }
 
-void Shader::setInt(const std::string &name, int value)
+void Shader::SetInt(const std::string &name, int value)
 {
 #ifdef A_SHADER_DEBUG
     if (locations.find(name) == locations.end())
@@ -141,7 +141,7 @@ void Shader::SetMat4x4(const std::string &name, float const* const matrix)
     glUniformMatrix4fv(uniformLocations.at(name), 1, GL_FALSE, matrix);
 }
 
-void Shader::setVec3(const std::string &name, float const* const vec)
+void Shader::SetVec3(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
     if (uniformLocations.find(name) == uniformLocations.end())
@@ -154,7 +154,7 @@ void Shader::setVec3(const std::string &name, float const* const vec)
     glUniform3fv(uniformLocations.at(name), 1, vec);
 }
 
-void Shader::setVec4(const std::string &name, float const* const vec)
+void Shader::SetVec4(const std::string &name, float const* const vec)
 {
 #ifdef A_SHADER_DEBUG
     if (uniformLocations.find(name) == uniformLocations.end())
@@ -167,7 +167,7 @@ void Shader::setVec4(const std::string &name, float const* const vec)
     glUniform4fv(uniformLocations.at(name), 1, vec);
 }
 
-void Shader::setListMat4x4(const std::string &name, float const* const list, unsigned int size)
+void Shader::SetListMat4x4(const std::string &name, float const* const list, unsigned int size)
 {
 
 #ifdef A_SHADER_DEBUG
