@@ -1,14 +1,11 @@
 #pragma once
 
-#include "gpu/screen_fbo.h"
+#include "gpu/backends/opengl/screen_fbo.h"
 
 #include "pch.h"
 
 class Viewport
 {
 public:
-    void Render(std::shared_ptr<ScreenFBO> & renderTarget);
-
-private:
-    Size m_Size;
+    Size Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget);
 };

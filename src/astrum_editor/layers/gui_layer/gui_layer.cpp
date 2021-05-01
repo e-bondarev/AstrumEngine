@@ -26,7 +26,6 @@ void GUILayer::OnAttach()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags = ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
-
     io.IniFilename = ASTRUM_ROOT "imgui.ini";
 
 	ImGui_ImplGlfw_InitForOpenGL(Window::GetGlfwWindow(), true);
@@ -69,9 +68,18 @@ void GUILayer::OnUpdate()
     
     m_Dockspace->Render();
     m_Scene->Render();
-    m_Viewport->Render(m_Layers->Graphics->GetRenderTarget());
     m_Inspector->Render();
     m_Assets->Render();
+
+    Size size = m_Viewport->Render(m_Layers->Graphics->GetRenderTarget());
+
+    if (size != m_LastViewportSize)
+    {
+        m_LastViewportSize = size;
+        m_Layers->Graphics->GetRenderTarget()->Resize(size);
+        m_Layers->Graphics->OnViewportResize(size);
+        glViewport(0, 0, size.Width, size.Height);
+    }
 
     Render();   
 }

@@ -4,10 +4,12 @@
 #include "../gui_layer/gui_layer.h"
 #include "../layers.h"
 
-#include "gpu/vao.h"
-#include "gpu/shader.h"
-#include "gpu/screen_fbo.h"
+#include "gpu/backends/opengl/vao.h"
+#include "gpu/backends/opengl/shader.h"
+#include "gpu/backends/opengl/screen_fbo.h"
 #include "gpu/vertex_layouts/vertex.h"
+
+#include "math/math.h"
 
 #include "pch.h"
 
@@ -22,15 +24,22 @@ public:
     void OnAttach() override;
     void OnUpdate() override;
 
-    std::shared_ptr<ScreenFBO>& GetRenderTarget();
+    void OnViewportResize(Size size);
+
+    std::shared_ptr<OpenGL::ScreenFBO>& GetRenderTarget();
 
 private:
     Layers* m_Layers;
 
-    std::vector<std::unique_ptr<VAO<Vertex>>> m_VAOs;
-    std::unique_ptr<Shader> m_Shader;
+    struct {
+        Mat4 model{ Mat4(1) };
+        Mat4 projection{ Mat4(1) };
+    } m_SceneUBO;
 
-    std::shared_ptr<ScreenFBO> m_RenderTarget;
+    std::vector<std::unique_ptr<OpenGL::VAO>> m_VAOs;
+    std::unique_ptr<OpenGL::Shader> m_Shader;
+
+    std::shared_ptr<OpenGL::ScreenFBO> m_RenderTarget;
 
     GraphicsLayer(const GraphicsLayer&) = delete;
     GraphicsLayer& operator=(const GraphicsLayer&) = delete;

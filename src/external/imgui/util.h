@@ -6,13 +6,13 @@
 
 struct ImGuiWindowBoundaries
 {
-    Pos pos;
-    Size size;
+    Pos Pos;
+    Size Size;
 };
 
 namespace ImGuiUtil
 {
-    inline ImGuiWindowBoundaries& update()
+    inline ImGuiWindowBoundaries& Update()
     {
         static ImGuiWindowBoundaries boundaries;
 
@@ -24,11 +24,11 @@ namespace ImGuiUtil
         vMax.x += ImGui::GetWindowPos().x;
         vMax.y += ImGui::GetWindowPos().y;
 
-        boundaries.pos.x = vMin.x;
-        boundaries.pos.y = vMin.y;
+        boundaries.Pos.x = vMin.x;
+        boundaries.Pos.y = vMin.y;
 
-        boundaries.size.Width = vMax.x - vMin.x;
-        boundaries.size.Height = vMax.y - vMin.y;
+        boundaries.Size.Width = vMax.x - vMin.x;
+        boundaries.Size.Height = vMax.y - vMin.y;
 
         return boundaries;
     }

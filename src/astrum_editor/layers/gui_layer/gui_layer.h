@@ -29,9 +29,11 @@ private:
     
     std::unique_ptr<Dockspace> m_Dockspace;
     std::unique_ptr<Scene>     m_Scene;
-    std::unique_ptr<Viewport>  m_Viewport;
     std::unique_ptr<Inspector> m_Inspector;
     std::unique_ptr<Assets>    m_Assets;
+
+    std::unique_ptr<Viewport>  m_Viewport;
+    Size m_LastViewportSize;
 
     GUILayer(const GUILayer&) = delete;
     GUILayer& operator=(const GUILayer&) = delete;
