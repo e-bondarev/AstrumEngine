@@ -19,9 +19,9 @@ private:
 	Mat4 m_TransformationMatrix{ Mat4(1) };
 	void RecalculateTransformationMatrix();
 
-	Vec3 m_Position;
-	Vec3 m_Rotation;
-	Vec3 m_Scale;
+	Vec3 m_Position{ 0, 0, 0 };
+	Vec3 m_Rotation{ 0, 0, 0 };
+	Vec3 m_Scale{ 1 };
 };
 
 REGISTER(Transform);

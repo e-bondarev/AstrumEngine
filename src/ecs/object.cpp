@@ -22,10 +22,10 @@ Object::Object(const std::string& meshFilepath, const std::string& textureFilepa
         }
     );
 
-    m_Transform = dynamic_cast<Transform*>(AddComponent("Transform"));
+    m_Transform = std::dynamic_pointer_cast<Transform>(AddComponent("Transform"));
 }
 
-Transform* Object::GetTransform()
+std::shared_ptr<Transform> Object::GetTransform()
 {
     return m_Transform;
 }

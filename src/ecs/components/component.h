@@ -6,6 +6,8 @@
 class Component
 {
 public:
+	virtual ~Component() = default;
+
 	inline static std::map<std::string, std::function<void*()>> m_Factories;
 
 	inline virtual void OnInit() {}
