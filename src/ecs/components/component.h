@@ -19,8 +19,11 @@ class Add##type\
 public:\
 	Add##type()\
 	{\
-		A_LOG_OUT(#type " added to collection");\
-		Component::m_Factories[#type] = [&] { return new type(); };\
+		if (Component::m_Factories.find(#type) == Component::m_Factories.end())\
+		{\
+			A_LOG_OUT(#type " added to collection");\
+			Component::m_Factories[#type] = [&] { return new type(); };\
+		}\
 	}\
 };\
 \
