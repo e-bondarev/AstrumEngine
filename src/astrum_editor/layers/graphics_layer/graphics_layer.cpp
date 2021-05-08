@@ -20,54 +20,12 @@ void GraphicsLayer::OnAttach()
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
     m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model");
 
-    m_Async.AddToQueue("assets/models/cube.fbx");
-    m_Async.AddToQueue("assets/models/cube.fbx");
-
-    ImageAsset imageAsset("assets/textures/brick.jpg");
-
-    m_Texture = std::make_unique<OpenGL::Texture>(
-        imageAsset.Size, 
-        imageAsset.Data,
-        GL_RGB,
-        GL_RGB,
-        GL_UNSIGNED_BYTE,
-        std::vector<OpenGL::Texture::param_t> {
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_LINEAR },
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_LINEAR },
-        }
-    );
-}
-
-void GraphicsLayer::Async::AddToQueue(const std::string& path)
-{
-    // Here we really need to copy this string in order to preserve it in the async scope.
-    auto Callback = [&](std::vector<ModelAsset>* queue, std::string pathCopy) {
-        ModelAsset modelAsset(pathCopy);
-        std::lock_guard<std::mutex> l(lock);
-        queue->push_back(modelAsset);
-    };
-
-    futures.push_back(std::async(std::launch::async, Callback, &modelQueue, path));
-}
-
-void GraphicsLayer::Async::CheckLoadingQueue(std::vector<std::shared_ptr<OpenGL::VAO>>& vaos)
-{
-    if (!modelQueue.size()) return;
-
-    std::vector<ModelAsset>::iterator it = std::begin(modelQueue);
-
-    while (it != std::end(modelQueue))
-    {
-        const ModelAsset& model = *it;
-        vaos.emplace_back(std::make_unique<OpenGL::VAO>(model.Vertices, Vertex::GetLayout(), model.Indices));
-        it = modelQueue.erase(it);
-    }
+    m_Objects.emplace_back(std::make_unique<Object>("assets/models/cube.fbx", "assets/textures/brick.jpg"));
+    m_Objects.emplace_back(std::make_unique<Object>("assets/models/cube.fbx", "assets/textures/brick.jpg"));
 }
 
 void GraphicsLayer::OnUpdate()
 {
-    m_Async.CheckLoadingQueue(m_VAOs);
-
     static int theta { 0 }; theta += 1; theta = theta % 360;
 
     m_SceneUBO.model = Math::Translate(Mat4(1), Vec3(0, 0, -10));
@@ -77,18 +35,24 @@ void GraphicsLayer::OnUpdate()
     m_RenderTarget->Clear();
         m_Shader->Bind();
             m_Shader->SetMat4x4("u_Projection", Math::ToPtr(m_SceneUBO.projection));
-            for (size_t i = 0; i < m_VAOs.size(); i++)
+
+            int i = 0;
+
+            for (auto& object : m_Objects)
             {
-                const OpenGL::VAO& vao = *m_VAOs[i];
+                OpenGL::VAO& vao = *object->GetVAO();
+                OpenGL::Texture& texture = *object->GetTexture();
 
                 m_SceneUBO.model = Math::Translate(m_SceneUBO.model, Vec3(i * 3, 0, 0));
                 m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_SceneUBO.model));
 
-                m_Texture->Bind();
-                vao.Bind();
-                    glDrawElements(GL_TRIANGLES, vao.GetVertexCount(), GL_UNSIGNED_INT, nullptr);
-                vao.Unbind();
-                m_Texture->Unbind();
+                texture.Bind();
+                    vao.Bind();
+                        glDrawElements(GL_TRIANGLES, vao.GetVertexCount(), GL_UNSIGNED_INT, nullptr);
+                    vao.Unbind();
+                texture.Unbind();
+
+                i++;
             }
         m_Shader->Unbind();
     m_RenderTarget->Unbind();
