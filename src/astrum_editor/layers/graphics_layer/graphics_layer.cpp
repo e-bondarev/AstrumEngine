@@ -28,9 +28,6 @@ void GraphicsLayer::OnUpdate()
 {
     static int theta { 0 }; theta += 1; theta = theta % 360;
 
-    m_SceneUBO.model = Math::Translate(Mat4(1), Vec3(0, 0, -10));
-    m_SceneUBO.model = Math::Rotate(m_SceneUBO.model, Math::Radians(static_cast<float>(theta)), Vec3(1, 1, 1));
-
     m_RenderTarget->Bind();
     m_RenderTarget->Clear();
         m_Shader->Bind();
@@ -43,8 +40,9 @@ void GraphicsLayer::OnUpdate()
                 OpenGL::VAO& vao = *object->GetVAO();
                 OpenGL::Texture& texture = *object->GetTexture();
 
-                m_SceneUBO.model = Math::Translate(m_SceneUBO.model, Vec3(i * 3, 0, 0));
-                m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_SceneUBO.model));
+                object->GetTransform()->SetPosition(Vec3(i * 3, 0, -10));
+                object->GetTransform()->SetRotation(Vec3(theta));
+                m_Shader->SetMat4x4("u_Model", Math::ToPtr(object->GetTransform()->GetTransformationMatrix()));
 
                 texture.Bind();
                     vao.Bind();

@@ -34,7 +34,6 @@ private:
     Layers& m_Layers;
 
     struct {
-        Mat4 model{ Mat4(1) };
         Mat4 projection{ Mat4(1) };
     } m_SceneUBO;
 

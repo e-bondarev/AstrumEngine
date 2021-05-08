@@ -21,6 +21,13 @@ Object::Object(const std::string& meshFilepath, const std::string& textureFilepa
             { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_LINEAR },
         }
     );
+
+    m_Transform = dynamic_cast<Transform*>(AddComponent("Transform"));
+}
+
+Transform* Object::GetTransform()
+{
+    return m_Transform;
 }
 
 std::shared_ptr<OpenGL::VAO>& Object::GetVAO()
