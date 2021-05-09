@@ -13,8 +13,8 @@ namespace OpenGL
             GL_RGB,
             GL_UNSIGNED_BYTE,
             std::vector<Texture::param_t> {
-                { GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_NEAREST },
-                { GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_NEAREST },
+                { ParamType::Int, GL_TEXTURE_MIN_FILTER, GL_NEAREST },
+                { ParamType::Int, GL_TEXTURE_MAG_FILTER, GL_NEAREST },
             }
         );
 

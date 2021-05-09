@@ -19,7 +19,7 @@ namespace OpenGL
         GLuint m_Type;
 
     public:
-        using param_t = std::tuple<GLParamType, GLuint, GLfloat>;
+        using param_t = std::tuple<ParamType, GLuint, GLfloat>;
 
         Texture(Size size, unsigned char* data, GLint internalFormat, GLuint format, GLuint type, const std::vector<param_t>& parameters);
         ~Texture() override;

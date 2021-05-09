@@ -17,8 +17,8 @@ Object::Object(const std::string& meshFilepath, const std::string& textureFilepa
         GL_RGB,
         GL_UNSIGNED_BYTE,
         std::vector<OpenGL::Texture::param_t> {
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MIN_FILTER, GL_LINEAR },
-            { OpenGL::GLParamType::Int, GL_TEXTURE_MAG_FILTER, GL_LINEAR },
+            { OpenGL::ParamType::Int, GL_TEXTURE_MIN_FILTER, GL_LINEAR },
+            { OpenGL::ParamType::Int, GL_TEXTURE_MAG_FILTER, GL_LINEAR },
         }
     );
 

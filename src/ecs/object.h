@@ -20,7 +20,8 @@ public:
 		std::string rawName = typeid(T).name();
 		std::string prettyName = rawName.substr(rawName.find_first_of(' ') + 1, rawName.size());
 
-		std::function<void*()> callback = Component::m_Factories[prettyName];
+		//std::function<void*()> callback = ComponentFactory::m_Factories[prettyName];
+		std::function<void* ()> callback = ComponentFactory::GetFactory(prettyName);
 		std::shared_ptr<T> newComponent;
 		newComponent.reset(reinterpret_cast<T*>(callback()));
 		m_Components.push_back(newComponent);
@@ -29,7 +30,8 @@ public:
 
 	std::shared_ptr<Component> AddComponent(const std::string& name)
 	{
-		std::function<void*()> callback = Component::m_Factories[name];		
+		//std::function<void*()> callback = ComponentFactory::m_Factories[name];		
+		std::function<void* ()> callback = ComponentFactory::GetFactory(name);
 		std::shared_ptr<Component> newComponent;		
 		newComponent.reset(reinterpret_cast<Component*>(callback()));
 		m_Components.push_back(newComponent);

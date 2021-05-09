@@ -2,7 +2,7 @@
 
 namespace OpenGL
 {
-    enum class GLParamType
+    enum class ParamType
     {
         Int,
         Float

@@ -21,13 +21,13 @@ namespace OpenGL
         {
             switch (std::get<0>(param))
             {
-                case GLParamType::Int:
+                case ParamType::Int:
                 {
                     glTexParameteri(GL_TEXTURE_2D, std::get<1>(param), static_cast<GLint>(std::get<2>(param)));
                     break;
                 }
 
-                case GLParamType::Float:
+                case ParamType::Float:
                 {
                     glTexParameterf(GL_TEXTURE_2D, std::get<1>(param), std::get<2>(param));
                     break;
