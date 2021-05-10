@@ -15,6 +15,7 @@ public:
     static void SwapBuffers();
 
     static Size GetSize();
+    static Pos  GetMousePos();
     static GLFWwindow* GetGlfwWindow();
 
 private:

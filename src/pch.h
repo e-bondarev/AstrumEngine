@@ -2,7 +2,9 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 #include <map>
+#include <array>
 
 #include <memory>
 
@@ -13,6 +15,7 @@
 #include <cstdlib>
 
 #include "util/size.h"
+#include "util/color.h"
 
 #define A_LOG_OUT(x) ::std::cout << x << '\n'
 

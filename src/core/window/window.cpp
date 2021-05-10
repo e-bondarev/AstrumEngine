@@ -46,6 +46,14 @@ Size Window::GetSize()
     return GetInstance().m_Size;
 }
 
+Pos Window::GetMousePos()
+{
+    double x, y;
+    glfwGetCursorPos(GetInstance().GetGlfwWindow(), &x, &y);
+
+    return { static_cast<float>(x), static_cast<float>(y) };
+}
+
 GLFWwindow* Window::GetGlfwWindow()
 {
     return GetInstance().m_GlfwWindow;

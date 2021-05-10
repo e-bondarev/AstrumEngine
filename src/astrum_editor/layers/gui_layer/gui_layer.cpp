@@ -71,7 +71,7 @@ void GUILayer::OnUpdate()
     m_Inspector->Render();
     m_Assets->Render();
 
-    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget(), &m_Layers.Graphics->POS);
+    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget(), m_Layers.Graphics->GetScene());
 
     if (size != m_LastViewportSize)
     {

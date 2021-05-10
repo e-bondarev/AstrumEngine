@@ -9,12 +9,21 @@ in VSOutput
 
 uniform sampler2D u_Texture;
 uniform vec3 u_Col;
+uniform int u_Selected;
 
 out vec4 out_Color;
 out vec3 out_ID;
 
 void main()
 {
-	out_Color = texture(u_Texture, vsOut.uv);
+	if (u_Selected == 1)
+	{
+		out_Color = texture(u_Texture, vsOut.uv) * 1.5;
+	}
+	else
+	{
+		out_Color = texture(u_Texture, vsOut.uv);
+	}
+
 	out_ID = u_Col;
 }

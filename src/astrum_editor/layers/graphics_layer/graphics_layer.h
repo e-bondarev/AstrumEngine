@@ -20,8 +20,6 @@
 class GraphicsLayer : public Layer
 {
 public:
-    Pos* POS{ nullptr };
-
     GraphicsLayer(Layers& layers);
     ~GraphicsLayer();
 
@@ -31,6 +29,7 @@ public:
     void OnViewportResize(Size size);
 
     std::shared_ptr<OpenGL::ScreenFBO>& GetRenderTarget();
+    std::shared_ptr<Scene>& GetScene();
 
 private:
     Layers& m_Layers;

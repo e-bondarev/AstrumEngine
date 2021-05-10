@@ -2,7 +2,7 @@
 
 #include "object.h"
 
-inline static unsigned int idAcc{ 15000 };
+inline static unsigned int idAcc{ 1 };
 
 Object::Object()
 {

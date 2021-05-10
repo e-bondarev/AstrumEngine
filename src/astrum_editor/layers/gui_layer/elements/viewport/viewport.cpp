@@ -5,7 +5,7 @@
 
 #include "core/window/window.h"
 
-Size Viewport::Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget, Pos** POS)
+Size Viewport::Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget, std::shared_ptr<Scene> & scene)
 {
     ImGui::Begin("Viewport");
         ImGuiWindowBoundaries boundaries = ImGuiUtil::Update();
@@ -14,12 +14,18 @@ Size Viewport::Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget, Pos** P
 
     if (glfwGetMouseButton(Window::GetGlfwWindow(), GLFW_MOUSE_BUTTON_1))
     {
-        double x, y;
-        glfwGetCursorPos(Window::GetGlfwWindow(), &x, &y);
+        Pos mouseCoordsWindowSpace = Window::GetMousePos();
+        Pos viewportCoords = { mouseCoordsWindowSpace.x - boundaries.Pos.x, mouseCoordsWindowSpace.y - boundaries.Pos.y + 24 };
 
-        Pos viewportCoords = { x - boundaries.Pos.x, y - boundaries.Pos.y + 24 };
-        //Pos viewportCoords = { x - boundaries.Pos.x, y - boundaries.Pos.y };
-        *POS = new Pos({ viewportCoords.x, viewportCoords.y });
+        renderTarget->Bind();
+            std::array<unsigned char, 3> pixel = renderTarget->GetPixel<3>(GL_COLOR_ATTACHMENT1, viewportCoords);
+        renderTarget->Unbind();
+
+        unsigned int id = ColorToID({ pixel[0], pixel[1], pixel[2] });
+
+        scene->m_SelectedObjectID = id;
+
+        A_DEBUG_LOG_OUT(id);
     }
 
     return boundaries.Size;

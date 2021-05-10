@@ -18,7 +18,7 @@ void GraphicsLayer::OnAttach()
 
     TextAsset vsCodeAsset("assets/shaders/default_shader.vert");
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
-    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model", "u_Col");
+    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model", "u_Col", "u_Selected");
 
     std::shared_ptr obj0 = std::make_shared<Object>();
     std::shared_ptr obj1 = std::make_shared<Object>();
@@ -53,32 +53,15 @@ void GraphicsLayer::OnUpdate()
                 std::shared_ptr<Mesh> mesh = m_Scene->m_Objects[i]->GetComponent<Mesh>();
                 m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_Scene->m_Objects[i]->GetTransform()->GetTransformationMatrix()));
 
-                unsigned int x = m_Scene->m_Objects[i]->GetID();
-                unsigned int red   = (x & 0x00ff0000) >> 16;
-                unsigned int green = (x & 0x0000ff00) >> 8;
-                unsigned int blue  = (x & 0x000000ff);
+                Vec3 idToColor = IDToColor(m_Scene->m_Objects[i]->GetID());
+                m_Shader->SetVec3("u_Col", Math::ToPtr(idToColor));
 
-                m_Shader->SetVec3("u_Col", Math::ToPtr(Vec3(red / 255.0f, green / 255.0f, blue / 255.0f)));
+                m_Shader->SetInt("u_Selected", m_Scene->m_SelectedObjectID == m_Scene->m_Objects[i]->GetID());
+
                 mesh->Render();
             }
 
         m_Shader->Unbind();
-
-        if (POS)
-        {
-            unsigned char pixels[1 * 1 * 3] = { 0 };
-            glReadBuffer(GL_COLOR_ATTACHMENT1);
-            glReadPixels(POS->x, POS->y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-
-            int rgb = pixels[0];
-            rgb = (rgb << 8) + pixels[1];
-            rgb = (rgb << 8) + pixels[2];
-
-            A_DEBUG_LOG_OUT(rgb);
-
-            POS = nullptr;
-        }
-
     m_RenderTarget->Unbind();
 }
 
@@ -90,4 +73,9 @@ void GraphicsLayer::OnViewportResize(Size size)
 std::shared_ptr<OpenGL::ScreenFBO> & GraphicsLayer::GetRenderTarget()
 {
     return m_RenderTarget;
+}
+
+std::shared_ptr<Scene>& GraphicsLayer::GetScene()
+{
+    return m_Scene;
 }

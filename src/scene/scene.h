@@ -4,6 +4,7 @@
 
 class Scene
 {
+friend class GraphicsLayer;
 public:
 	template <typename... Args>
 	Scene(Args ...objects)
@@ -12,4 +13,7 @@ public:
 	}
 
 	std::vector<std::shared_ptr<Object>> m_Objects;
+
+	unsigned int m_SelectedObjectID{ 0 };
+	std::shared_ptr<Object> m_SelectedObject;
 };
