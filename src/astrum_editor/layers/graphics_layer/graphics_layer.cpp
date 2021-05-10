@@ -23,6 +23,9 @@ void GraphicsLayer::OnAttach()
     std::shared_ptr obj0 = std::make_shared<Object>();
     std::shared_ptr obj1 = std::make_shared<Object>();
 
+    obj0->GetTransform()->SetPosition(0, 0, -10);
+    obj1->GetTransform()->SetPosition(4, 0, -10);
+
     ModelAsset model0("assets/models/cube.fbx");
     ImageAsset image0("assets/textures/brick.jpg");
 
@@ -48,8 +51,8 @@ void GraphicsLayer::OnUpdate()
             {
                 std::shared_ptr<Mesh> mesh = object->GetComponent<Mesh>();
 
-                object->GetTransform()->SetPosition(Vec3(i * 3, 0, -10));
-                object->GetTransform()->SetRotation(Vec3(theta));
+                object->GetTransform()->SetRotation(theta);
+
                 m_Shader->SetMat4x4("u_Model", Math::ToPtr(object->GetTransform()->GetTransformationMatrix()));
 
                 mesh->m_Texture->Bind();
@@ -60,6 +63,7 @@ void GraphicsLayer::OnUpdate()
 
                 i++;
             }
+
         m_Shader->Unbind();
     m_RenderTarget->Unbind();
 }

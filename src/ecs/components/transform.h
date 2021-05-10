@@ -11,10 +11,15 @@ public:
 
 	Mat4 GetTransformationMatrix() const;
 
+	template <typename... Args>
+	void SetPosition(Args ...args) { m_Position = Vec3(std::forward<Args>(args)...); RecalculateTransformationMatrix(); }
 	void SetPosition(const Vec3& position);
-	Vec3 GetPosition() const;
 
+	template <typename... Args>
+	void SetRotation(Args ...args) { m_Rotation = Vec3(std::forward<Args>(args)...); RecalculateTransformationMatrix(); }
 	void SetRotation(const Vec3& rotation);
+
+	Vec3 GetPosition() const;
 	Vec3 GetRotation() const;
 
 private:
