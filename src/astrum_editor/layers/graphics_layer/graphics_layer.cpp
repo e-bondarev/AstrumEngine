@@ -20,8 +20,17 @@ void GraphicsLayer::OnAttach()
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
     m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model");
 
-    m_Objects.emplace_back(std::make_unique<Object>("assets/models/cube.fbx", "assets/textures/brick.jpg"));
-    m_Objects.emplace_back(std::make_unique<Object>("assets/models/cube.fbx", "assets/textures/brick.jpg"));
+    std::shared_ptr obj0 = std::make_shared<Object>();
+    std::shared_ptr obj1 = std::make_shared<Object>();
+
+    ModelAsset model0("assets/models/cube.fbx");
+    ImageAsset image0("assets/textures/brick.jpg");
+
+    obj0->AddComponent<Mesh>()->Create(model0, image0);
+    obj1->AddComponent<Mesh>()->Create(model0, image0);
+
+    m_Objects.emplace_back(obj0);
+    m_Objects.emplace_back(obj1);
 }
 
 void GraphicsLayer::OnUpdate()
@@ -37,18 +46,17 @@ void GraphicsLayer::OnUpdate()
 
             for (auto& object : m_Objects)
             {
-                OpenGL::VAO& vao = *object->GetVAO();
-                OpenGL::Texture& texture = *object->GetTexture();
+                std::shared_ptr<Mesh> mesh = object->GetComponent<Mesh>();
 
                 object->GetTransform()->SetPosition(Vec3(i * 3, 0, -10));
                 object->GetTransform()->SetRotation(Vec3(theta));
                 m_Shader->SetMat4x4("u_Model", Math::ToPtr(object->GetTransform()->GetTransformationMatrix()));
 
-                texture.Bind();
-                    vao.Bind();
-                        glDrawElements(GL_TRIANGLES, vao.GetVertexCount(), GL_UNSIGNED_INT, nullptr);
-                    vao.Unbind();
-                texture.Unbind();
+                mesh->m_Texture->Bind();
+                    mesh->m_VAO->Bind();
+                        glDrawElements(GL_TRIANGLES, mesh->m_VAO->GetVertexCount(), GL_UNSIGNED_INT, nullptr);
+                    mesh->m_VAO->Unbind();
+                mesh->m_Texture->Unbind();
 
                 i++;
             }

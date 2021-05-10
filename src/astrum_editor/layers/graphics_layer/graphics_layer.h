@@ -37,7 +37,7 @@ private:
         Mat4 projection{ Mat4(1) };
     } m_SceneUBO;
 
-    std::vector<std::unique_ptr<Object>> m_Objects;
+    std::vector<std::shared_ptr<Object>> m_Objects;
 
     std::unique_ptr<OpenGL::Shader> m_Shader;
 

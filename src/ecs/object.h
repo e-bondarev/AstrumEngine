@@ -10,8 +10,7 @@
 class Object
 {
 public:
-	Object() = default;
-	Object(const std::string& meshFilepath, const std::string& textureFilepath);
+	Object();
 
 	template<typename T> 
 	std::shared_ptr<T> AddComponent()
@@ -23,7 +22,9 @@ public:
 		std::function<void* ()> callback = ComponentFactory::GetFactory(prettyName);
 		std::shared_ptr<T> newComponent;
 		newComponent.reset(reinterpret_cast<T*>(callback()));
-		m_Components.push_back(newComponent);
+		m_Components[prettyName] = newComponent;
+		newComponent->OnInit();
+
 		return newComponent;
 	}
 
@@ -32,20 +33,40 @@ public:
 		std::function<void* ()> callback = ComponentFactory::GetFactory(name);
 		std::shared_ptr<Component> newComponent;		
 		newComponent.reset(reinterpret_cast<Component*>(callback()));
-		m_Components.push_back(newComponent);
+		m_Components[name] = newComponent;
+		newComponent->OnInit();
+
 		return newComponent;
+	}
+
+	template <typename T>
+	std::shared_ptr<T> GetComponent()
+	{
+		for (auto& pair : m_Components)
+		{
+			if (std::shared_ptr<T> component = std::dynamic_pointer_cast<T>(pair.second))
+			{
+				return component;
+			}
+		}
+
+		return nullptr;
+	}
+
+	std::shared_ptr<Component> GetComponent(const std::string& name)
+	{
+		if (m_Components.find(name) == m_Components.end())
+		{
+			return nullptr;
+		}
+
+		return m_Components[name];
 	}
 
 	std::shared_ptr<Transform> GetTransform();
 
-	std::shared_ptr<OpenGL::VAO>& GetVAO();
-	std::shared_ptr<OpenGL::Texture>& GetTexture();
-
 private:
-	std::vector<std::shared_ptr<Component>> m_Components;
+	std::map<std::string, std::shared_ptr<Component>> m_Components;
 
 	std::shared_ptr<Transform> m_Transform;
-
-	std::shared_ptr<OpenGL::VAO> m_VAO;
-	std::shared_ptr<OpenGL::Texture> m_Texture;
 };

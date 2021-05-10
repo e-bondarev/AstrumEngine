@@ -7,6 +7,8 @@
 class Transform : public Component
 {
 public:
+	Transform() : Component("Transform") {}
+
 	Mat4 GetTransformationMatrix() const;
 
 	void SetPosition(const Vec3& position);
