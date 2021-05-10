@@ -11,15 +11,17 @@
 #include "gpu/backends/opengl/screen_fbo.h"
 #include "gpu/vertex_layouts/vertex.h"
 
+#include "scene/scene.h"
+
 #include "ecs/object.h"
 
 #include "math/math.h"
 
-#include <future>
-
 class GraphicsLayer : public Layer
 {
 public:
+    Pos* POS{ nullptr };
+
     GraphicsLayer(Layers& layers);
     ~GraphicsLayer();
 
@@ -37,7 +39,7 @@ private:
         Mat4 projection{ Mat4(1) };
     } m_SceneUBO;
 
-    std::vector<std::shared_ptr<Object>> m_Objects;
+    std::shared_ptr<Scene> m_Scene;
 
     std::unique_ptr<OpenGL::Shader> m_Shader;
 

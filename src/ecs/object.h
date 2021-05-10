@@ -65,8 +65,12 @@ public:
 
 	std::shared_ptr<Transform> GetTransform();
 
+	unsigned int GetID() const;
+
 private:
 	std::map<std::string, std::shared_ptr<Component>> m_Components;
 
 	std::shared_ptr<Transform> m_Transform;
+
+	unsigned int m_ID;
 };

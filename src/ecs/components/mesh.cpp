@@ -16,3 +16,12 @@ void Mesh::Create(ModelAsset& modelAsset, ImageAsset& imageAsset)
         }
     );
 }
+
+void Mesh::Render()
+{
+    m_Texture->Bind();
+        m_VAO->Bind();
+            glDrawElements(GL_TRIANGLES, m_VAO->GetVertexCount(), GL_UNSIGNED_INT, nullptr);
+        m_VAO->Unbind();
+    m_Texture->Unbind();
+}

@@ -1,6 +1,6 @@
 #pragma once
 
-class Scene
+class SceneView
 {
 public:
     void Render();    

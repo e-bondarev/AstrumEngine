@@ -5,7 +5,7 @@
 #include "../layers.h"
 
 #include "elements/dockspace/dockspace.h"
-#include "elements/scene/scene.h"
+#include "elements/scene_view/scene_view.h"
 #include "elements/viewport/viewport.h"
 #include "elements/inspector/inspector.h"
 #include "elements/assets/assets.h"
@@ -26,10 +26,9 @@ private:
     void Render();
     
     std::unique_ptr<Dockspace> m_Dockspace;
-    std::unique_ptr<Scene>     m_Scene;
+    std::unique_ptr<SceneView> m_Scene;
     std::unique_ptr<Inspector> m_Inspector;
     std::unique_ptr<Assets>    m_Assets;
-
     std::unique_ptr<Viewport>  m_Viewport;
     Size m_LastViewportSize;
 

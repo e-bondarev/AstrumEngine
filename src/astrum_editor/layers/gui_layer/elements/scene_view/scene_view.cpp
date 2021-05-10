@@ -1,8 +1,8 @@
-#include "scene.h"
+#include "scene_view.h"
 
 #include "imgui/imgui.h"
 
-void Scene::Render()
+void SceneView::Render()
 {
     ImGui::Begin("Scene view");
 

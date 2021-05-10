@@ -32,7 +32,7 @@ void GUILayer::OnAttach()
 	ImGui_ImplOpenGL3_Init();
 
     m_Dockspace = std::make_unique<Dockspace>();
-    m_Scene     = std::make_unique<Scene>();
+    m_Scene     = std::make_unique<SceneView>();
     m_Viewport  = std::make_unique<Viewport>();
     m_Inspector = std::make_unique<Inspector>();
     m_Assets    = std::make_unique<Assets>();
@@ -71,7 +71,7 @@ void GUILayer::OnUpdate()
     m_Inspector->Render();
     m_Assets->Render();
 
-    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget());
+    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget(), &m_Layers.Graphics->POS);
 
     if (size != m_LastViewportSize)
     {

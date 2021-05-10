@@ -18,7 +18,7 @@ void GraphicsLayer::OnAttach()
 
     TextAsset vsCodeAsset("assets/shaders/default_shader.vert");
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
-    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model");
+    m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model", "u_Col");
 
     std::shared_ptr obj0 = std::make_shared<Object>();
     std::shared_ptr obj1 = std::make_shared<Object>();
@@ -32,39 +32,53 @@ void GraphicsLayer::OnAttach()
     obj0->AddComponent<Mesh>()->Create(model0, image0);
     obj1->AddComponent<Mesh>()->Create(model0, image0);
 
-    m_Objects.emplace_back(obj0);
-    m_Objects.emplace_back(obj1);
+    m_Scene = std::make_shared<Scene>(obj0, obj1);
 }
 
 void GraphicsLayer::OnUpdate()
 {
     static int theta { 0 }; theta += 1; theta = theta % 360;
+    for (int i = 0; i < m_Scene->m_Objects.size(); i++)
+    {
+        m_Scene->m_Objects[i]->GetTransform()->SetRotation(theta);
+    }
 
     m_RenderTarget->Bind();
     m_RenderTarget->Clear();
         m_Shader->Bind();
             m_Shader->SetMat4x4("u_Projection", Math::ToPtr(m_SceneUBO.projection));
 
-            int i = 0;
-
-            for (auto& object : m_Objects)
+            for (int i = 0; i < m_Scene->m_Objects.size(); i++)
             {
-                std::shared_ptr<Mesh> mesh = object->GetComponent<Mesh>();
+                std::shared_ptr<Mesh> mesh = m_Scene->m_Objects[i]->GetComponent<Mesh>();
+                m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_Scene->m_Objects[i]->GetTransform()->GetTransformationMatrix()));
 
-                object->GetTransform()->SetRotation(theta);
+                unsigned int x = m_Scene->m_Objects[i]->GetID();
+                unsigned int red   = (x & 0x00ff0000) >> 16;
+                unsigned int green = (x & 0x0000ff00) >> 8;
+                unsigned int blue  = (x & 0x000000ff);
 
-                m_Shader->SetMat4x4("u_Model", Math::ToPtr(object->GetTransform()->GetTransformationMatrix()));
-
-                mesh->m_Texture->Bind();
-                    mesh->m_VAO->Bind();
-                        glDrawElements(GL_TRIANGLES, mesh->m_VAO->GetVertexCount(), GL_UNSIGNED_INT, nullptr);
-                    mesh->m_VAO->Unbind();
-                mesh->m_Texture->Unbind();
-
-                i++;
+                m_Shader->SetVec3("u_Col", Math::ToPtr(Vec3(red / 255.0f, green / 255.0f, blue / 255.0f)));
+                mesh->Render();
             }
 
         m_Shader->Unbind();
+
+        if (POS)
+        {
+            unsigned char pixels[1 * 1 * 3] = { 0 };
+            glReadBuffer(GL_COLOR_ATTACHMENT1);
+            glReadPixels(POS->x, POS->y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+            int rgb = pixels[0];
+            rgb = (rgb << 8) + pixels[1];
+            rgb = (rgb << 8) + pixels[2];
+
+            A_DEBUG_LOG_OUT(rgb);
+
+            POS = nullptr;
+        }
+
     m_RenderTarget->Unbind();
 }
 

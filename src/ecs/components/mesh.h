@@ -17,6 +17,7 @@ public:
 	std::shared_ptr<OpenGL::Texture> m_Texture;
 
 	void Create(ModelAsset& modelAsset, ImageAsset& imageAsset);
+	void Render();
 };
 
 REGISTER(Mesh);

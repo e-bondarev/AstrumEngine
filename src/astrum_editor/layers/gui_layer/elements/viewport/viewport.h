@@ -5,5 +5,5 @@
 class Viewport
 {
 public:
-    Size Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget);
+    Size Render(std::shared_ptr<OpenGL::ScreenFBO> & renderTarget, Pos** POS);
 };
