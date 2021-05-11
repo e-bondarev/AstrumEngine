@@ -1,6 +1,8 @@
 #include "graphics_layer.h"
 #include "core/window/window.h"
 
+#include "gpu/backends/opengl/stencil.h"
+
 GraphicsLayer::GraphicsLayer(Layers& layers) : m_Layers { layers }
 {
     A_DEBUG_LOG_OUT("[Call] Graphics constructor");
@@ -20,6 +22,9 @@ void GraphicsLayer::OnAttach()
     TextAsset fsCodeAsset("assets/shaders/default_shader.frag");
     m_Shader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsCodeAsset.Content, "u_Projection", "u_Model", "u_Col", "u_Selected");
 
+    TextAsset fsStencilCodeAsset("assets/shaders/outline_shader.frag");
+    m_StencilShader = std::make_unique<OpenGL::Shader>(vsCodeAsset.Content, fsStencilCodeAsset.Content, "u_Projection", "u_Model");
+
     std::shared_ptr obj0 = std::make_shared<Object>();
     std::shared_ptr obj1 = std::make_shared<Object>();
 
@@ -35,33 +40,78 @@ void GraphicsLayer::OnAttach()
     m_Scene = std::make_shared<Scene>(obj0, obj1);
 }
 
+inline static void BeginRenderToStencil()
+{
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDisable(GL_DEPTH_TEST);
+}
+
+inline static void EndRenderToStencil()
+{
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glEnable(GL_DEPTH_TEST);
+}
+
+inline static void ReturnToNormalRendering()
+{
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilMask(0xFF);
+}
+
 void GraphicsLayer::OnUpdate()
 {
     static int theta { 0 }; theta += 1; theta = theta % 360;
     for (int i = 0; i < m_Scene->m_Objects.size(); i++)
     {
-        m_Scene->m_Objects[i]->GetTransform()->SetRotation(theta);
+        //m_Scene->m_Objects[i]->GetTransform()->SetRotation(theta);
     }
 
     m_RenderTarget->Bind();
     m_RenderTarget->Clear();
-        m_Shader->Bind();
+    {
+        OpenGL::Stencil::Begin();
+        {
+            m_StencilShader->Bind();
+            m_StencilShader->SetMat4x4("u_Projection", Math::ToPtr(m_SceneUBO.projection));
+
+            for (int i = 0; i < m_Scene->m_Objects.size(); i++)
+            {
+                if (m_Scene->m_SelectedObjectID == m_Scene->m_Objects[i]->GetID())
+                {
+                    std::shared_ptr<Mesh> mesh = m_Scene->m_Objects[i]->GetComponent<Mesh>();
+
+                    Mat4 changed = m_Scene->m_Objects[i]->GetTransform()->GetTransformationMatrix();
+                    changed = glm::scale(changed, Vec3(1.04f));
+                    m_StencilShader->SetMat4x4("u_Model", Math::ToPtr(changed));
+
+                    mesh->Render();
+                }
+            }
+
+            m_StencilShader->Unbind();
+        }
+
+        OpenGL::Stencil::End();
+        {
+            m_Shader->Bind();
             m_Shader->SetMat4x4("u_Projection", Math::ToPtr(m_SceneUBO.projection));
 
             for (int i = 0; i < m_Scene->m_Objects.size(); i++)
             {
                 std::shared_ptr<Mesh> mesh = m_Scene->m_Objects[i]->GetComponent<Mesh>();
-                m_Shader->SetMat4x4("u_Model", Math::ToPtr(m_Scene->m_Objects[i]->GetTransform()->GetTransformationMatrix()));
 
+                Mat4 changed = m_Scene->m_Objects[i]->GetTransform()->GetTransformationMatrix();
+                m_Shader->SetMat4x4("u_Model", Math::ToPtr(changed));
                 Vec3 idToColor = IDToColor(m_Scene->m_Objects[i]->GetID());
                 m_Shader->SetVec3("u_Col", Math::ToPtr(idToColor));
-
-                m_Shader->SetInt("u_Selected", m_Scene->m_SelectedObjectID == m_Scene->m_Objects[i]->GetID());
 
                 mesh->Render();
             }
 
-        m_Shader->Unbind();
+            m_Shader->Unbind();
+        }
+    }
     m_RenderTarget->Unbind();
 }
 

@@ -41,6 +41,7 @@ private:
     std::shared_ptr<Scene> m_Scene;
 
     std::unique_ptr<OpenGL::Shader> m_Shader;
+    std::unique_ptr<OpenGL::Shader> m_StencilShader;
 
     std::shared_ptr<OpenGL::ScreenFBO> m_RenderTarget;
 

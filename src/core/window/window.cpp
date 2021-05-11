@@ -85,6 +85,8 @@ void Window::InitGlew()
     glewInit();
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    //glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
 void Window::OnWindowResize(GLFWwindow* glfwWindow, int width, int height)
