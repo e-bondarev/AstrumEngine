@@ -12,12 +12,10 @@
 
 GUILayer::GUILayer(Layers& layers) : m_Layers { layers }
 {
-    A_DEBUG_LOG_OUT("[Call] GUI constructor");
 }
 
 GUILayer::~GUILayer()
 {
-    A_DEBUG_LOG_OUT("[Call] GUI destructor");
 }
 
 void GUILayer::OnAttach()
@@ -71,13 +69,13 @@ void GUILayer::OnUpdate()
     m_Inspector->Render();
     m_Assets->Render();
 
-    Size size = m_Viewport->Render(m_Layers.Graphics->GetRenderTarget(), m_Layers.Graphics->GetScene());
+    Size size = m_Viewport->Render(m_Layers.m_Graphics->GetRenderTarget(), m_Layers.m_Scene->GetScene());
 
     if (size != m_LastViewportSize)
     {
         m_LastViewportSize = size;
-        m_Layers.Graphics->GetRenderTarget()->Resize(size);
-        m_Layers.Graphics->OnViewportResize(size);
+        m_Layers.m_Graphics->GetRenderTarget()->Resize(size);
+        m_Layers.m_Graphics->OnViewportResize(size);
         glViewport(0, 0, size.Width, size.Height);
     }
 

@@ -13,6 +13,8 @@ void Window::Create(Size size, const std::string& title)
     self.InitGlfw();
     self.InitGlew();
 
+    self.m_Input = std::make_unique<Input>(self.GetGlfwWindow());
+
     A_DEBUG_LOG_OUT("[Call] Window constructor");
 }
 
@@ -39,7 +41,21 @@ void Window::PollEvents()
 void Window::SwapBuffers()
 {
     glfwSwapBuffers(GetInstance().GetGlfwWindow());
-}    
+}
+
+void Window::Begin()
+{
+    PollEvents();
+
+    GetInstance().m_Input->Begin();
+}
+
+void Window::End()
+{
+    GetInstance().m_Input->End();
+
+    SwapBuffers();
+}
 
 Size Window::GetSize()
 {
@@ -59,6 +75,11 @@ GLFWwindow* Window::GetGlfwWindow()
     return GetInstance().m_GlfwWindow;
 }
 
+Input& Window::GetInput()
+{
+    return *GetInstance().m_Input;
+}
+
 void Window::InitGlfw()
 {
     glfwInit();
@@ -73,6 +94,9 @@ void Window::InitGlfw()
     m_GlfwWindow = glfwCreateWindow(m_Size.Width, m_Size.Height, m_Title.c_str(), nullptr, nullptr);
 
     glfwSetWindowSizeCallback(m_GlfwWindow, OnWindowResize);
+
+    glfwSetMouseButtonCallback(m_GlfwWindow, Window::MouseCallback);
+    glfwSetKeyCallback(m_GlfwWindow, Window::KeyboardCallback);
     
     glfwMakeContextCurrent(m_GlfwWindow);
     glfwSwapInterval(1);

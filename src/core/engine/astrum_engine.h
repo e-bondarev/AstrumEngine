@@ -26,11 +26,11 @@ public:
     {
         while (!Window::ShouldClose())
         {
-            Window::PollEvents();
+            Window::Begin();
 
             m_App->Update();
 
-            Window::SwapBuffers();
+            Window::End();
         }
     }
 };

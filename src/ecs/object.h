@@ -7,10 +7,12 @@
 #include "components/transform.h"
 #include "components/mesh.h"
 
+class Scene;
+
 class Object
 {
 public:
-	Object();
+	Object(std::shared_ptr<Scene>& scene);
 
 	template<typename T> 
 	std::shared_ptr<T> AddComponent()
@@ -71,6 +73,8 @@ private:
 	std::map<std::string, std::shared_ptr<Component>> m_Components;
 
 	std::shared_ptr<Transform> m_Transform;
+
+	std::shared_ptr<Scene> m_Scene;
 
 	unsigned int m_ID;
 };

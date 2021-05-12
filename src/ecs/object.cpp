@@ -4,7 +4,7 @@
 
 inline static unsigned int idAcc{ 1 };
 
-Object::Object()
+Object::Object(std::shared_ptr<Scene> & scene) : m_Scene { scene }
 {
     m_Transform = AddComponent<Transform>();
 

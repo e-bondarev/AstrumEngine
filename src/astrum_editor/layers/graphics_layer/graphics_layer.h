@@ -2,6 +2,7 @@
 
 #include "layers/layer.h"
 #include "../gui_layer/gui_layer.h"
+#include "../scene_layer/scene_layer.h"
 #include "../layers.h"
 
 #include "assets/assets.h"
@@ -29,7 +30,6 @@ public:
     void OnViewportResize(Size size);
 
     std::shared_ptr<OpenGL::ScreenFBO>& GetRenderTarget();
-    std::shared_ptr<Scene>& GetScene();
 
 private:
     Layers& m_Layers;
@@ -37,8 +37,6 @@ private:
     struct {
         Mat4 projection{ Mat4(1) };
     } m_SceneUBO;
-
-    std::shared_ptr<Scene> m_Scene;
 
     std::unique_ptr<OpenGL::Shader> m_Shader;
     std::unique_ptr<OpenGL::Shader> m_StencilShader;
